@@ -25,20 +25,20 @@
 
 // export default App;
 
-import React, {useEffect, useState} from 'react';
+import React, { useEffect, useState } from 'react';
 import { RemixClient } from './remix-client';
 import './App.css';
 
-const client = new RemixClient()
+const client = new RemixClient();
 
-export const App = () =>{
-    return (
-        <div>
-            <h1>React Plugin Test</h1>
-            <p>Dynamic Theme formatting</p>
-        </div>
-    )
+export const App = () => {
+  return (
+    <div>
+      <h1>React Plugin Test</h1>
+      <p>Dynamic Theme formatting</p>
+      <p>Testing 123</p>
+    </div>
+  );
+};
 
-}
-
-export default App
+export default App;

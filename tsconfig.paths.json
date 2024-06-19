@@ -1,12 +1,12 @@
 {
-    "compilerOptions": {
-        "paths": {
-            "@remix-project/plugin": [
-              "node_modules/@remixproject/plugin/src/index.d.ts"
-            ],
-            "@remix-project/plugin-iframe": [
-              "node_modules/@remixproject/plugin-iframe/src/index.d.ts"
-            ]
-        }
+  "compilerOptions": {
+    "paths": {
+      "@remix-project/plugin": [
+        "node_modules/@remixproject/plugin/src/index.d.ts"
+      ],
+      "@remix-project/plugin-iframe": [
+        "node_modules/@remixproject/plugin-iframe/src/index.d.ts"
+      ]
     }
+  }
 }

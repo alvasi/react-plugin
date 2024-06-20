@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { RemixClient } from './remix-client';
 import './App.css';
 
@@ -7,10 +7,15 @@ const client = new RemixClient();
 export const App = () => {
   return (
     <div>
-      <h1>React Plugin Test</h1>
-      <p>Dynamic Theme formatting</p>
+      <p>Smart Contract Vulnerability Checker</p>
+      <button onClick={async () => {
+        const prompt = await client.getCurrentFileContent();
+        const code = await client.generateCode(prompt);
+        console.log(code);
+      }}>Check Vulnerabilities</button>
     </div>
   );
 };
 
 export default App;
+

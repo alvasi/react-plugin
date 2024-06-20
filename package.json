@@ -47,6 +47,15 @@
   "devDependencies": {
     "@nrwl/eslint-plugin-nx": "^19.3.0",
     "@types/node": "^20.14.6",
+    "axios": "^1.7.2",
+    "dotenv": "^16.4.5",
+    "openai": "^4.52.0",
+    "os-browserify": "^0.3.0",
     "prettier": "^3.3.2"
-  }
+  },
+  "description": "This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).",
+  "main": "index.js",
+  "keywords": [],
+  "author": "",
+  "license": "ISC"
 }

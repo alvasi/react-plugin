@@ -1,34 +1,47 @@
 import { PluginClient } from '@remixproject/plugin';
 import { createClient } from '@remixproject/plugin-webview';
+import axios from 'axios';
 
 export class RemixClient extends PluginClient {
   constructor() {
     super()
-    this.methods = ['getCurrentFileContent', 'generateCode']
+    this.methods = ['checkVulnerabilities']
     createClient(this)
   }
 
-  async getCurrentFileContent() {
+  // async getCurrentFileContent() {
+  //   try {
+  //     const fileName = await this.call('fileManager', 'getCurrentFile');
+  //     const prompt = await this.call('fileManager', 'readFile', fileName);
+  //     return prompt;
+  //   } catch (error) {
+  //     console.error('Error getting file content:', error);
+  //     throw new Error('Failed to get file content');
+  //   }
+  // }
+
+  async checkVulnerabilities() {
     try {
       const fileName = await this.call('fileManager', 'getCurrentFile');
       const prompt = await this.call('fileManager', 'readFile', fileName);
-      return prompt;
-    } catch (error) {
-      console.error('Error getting file content:', error);
-      throw new Error('Failed to get file content');
-    }
-  }
-
-  async generateCode(prompt) {
-    try {
-      const completion = await openai.chat.completions.create({
-        messages: [{ role: "system", content: prompt }],
+      const response = await axios.post('https://api.openai.com/v1/chat/completions', {
         model: "gpt-3.5-turbo-16k",
+        messages: [
+          {
+            role: "user",
+            content: "check for reentrancy vulnerabilities in the following code:" + prompt
+          }
+        ]
+      }, {
+        headers: {
+          'Authorization': `Bearer ${process.env.OPENAI_API_KEY}`,
+          'Content-Type': 'application/json'
+        }
       });
-      return completion.choices[0].message.content; // Assuming the API response format
+      return response.data;
     } catch (error) {
-      console.error('Error generating text from OpenAI:', error);
-      throw new Error('Failed to generate text from OpenAI');
+      console.error('Error checking vulnerabilities:', error);
+      throw new Error('Failed to check vulnerabilities');
     }
   }
 }

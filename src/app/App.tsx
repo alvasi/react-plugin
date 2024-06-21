@@ -1,4 +1,3 @@
-import React, { useState } from 'react';
 import { RemixClient } from './remix-client';
 import './App.css';
 
@@ -9,9 +8,8 @@ export const App = () => {
     <div>
       <p>Smart Contract Vulnerability Checker</p>
       <button onClick={async () => {
-        const prompt = await client.getCurrentFileContent();
-        const code = await client.generateCode(prompt);
-        console.log(code);
+        const prompt = await client.checkVulnerabilities();
+        console.log(prompt);
       }}>Check Vulnerabilities</button>
     </div>
   );

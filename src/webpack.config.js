@@ -8,7 +8,7 @@ module.exports = composePlugins(withNx(), (config) => {
   // Update the webpack config as needed here.
   // e.g. `config.plugins.push(new MyPlugin())`
   // add fallback for node modules
-  resolve: {
+  config.resolve = {
     fallback: {
       path: require.resolve('path-browserify'),
       os: require.resolve('os-browserify/browser'),
@@ -16,6 +16,12 @@ module.exports = composePlugins(withNx(), (config) => {
       crypto: require.resolve('crypto-browserify')
     }
   }
+
+  config.plugins = [
+    new webpack.ProvidePlugin({
+      'process.env.REACT_APP_OPENAI_API_KEY': JSON.stringify(process.env.REACT_APP_OPENAI_API_KEY)
+    })
+  ]
 
   // add externals
   config.externals = {
@@ -26,7 +32,7 @@ module.exports = composePlugins(withNx(), (config) => {
   // add public path
   config.output.publicPath = './'
 
-  // souce-map loader
+  // source-map loader
   config.module.rules.push({
     test: /\.js$/,
     use: ['source-map-loader'],

@@ -1,6 +1,8 @@
 import { PluginClient } from '@remixproject/plugin';
 import { createClient } from '@remixproject/plugin-webview';
-import axios from 'axios';
+import OpenAI from 'openai';
+
+const OPENAI_API_KEY = process.env.REACT_APP_OPENAI_API_KEY;
 
 export class RemixClient extends PluginClient {
   constructor() {
@@ -9,37 +11,21 @@ export class RemixClient extends PluginClient {
     createClient(this)
   }
 
-  // async getCurrentFileContent() {
-  //   try {
-  //     const fileName = await this.call('fileManager', 'getCurrentFile');
-  //     const prompt = await this.call('fileManager', 'readFile', fileName);
-  //     return prompt;
-  //   } catch (error) {
-  //     console.error('Error getting file content:', error);
-  //     throw new Error('Failed to get file content');
-  //   }
-  // }
-
   async checkVulnerabilities() {
     try {
       const fileName = await this.call('fileManager', 'getCurrentFile');
       const prompt = await this.call('fileManager', 'readFile', fileName);
-      // const response = await axios.post('https://api.openai.com/v1/chat/completions', {
-      //   model: "gpt-3.5-turbo-16k",
-      //   messages: [
-      //     {
-      //       role: "user",
-      //       content: "check for reentrancy vulnerabilities in the following code:" + prompt
-      //     }
-      //   ]
-      // }, {
-      //   headers: {
-      //     'Authorization': `Bearer ${process.env.OPENAI_API_KEY}`,
-      //     'Content-Type': 'application/json'
-      //   }
-      // });
-      // return response.data;
-      return prompt;
+      const openai = new OpenAI({ apiKey: OPENAI_API_KEY, dangerouslyAllowBrowser: true });
+      const response = await openai.chat.completions.create({
+        model: "gpt-3.5-turbo-16k",
+        messages: [{ role: "system", content: "You are a useful assistant" }, { role: "user", content: "say hello world" }],
+        temperature: 1,
+        max_tokens: 256,
+        top_p: 1,
+        frequency_penalty: 0,
+        presence_penalty: 0,
+      });
+      return response.choices[0]
     } catch (error) {
       console.error('Error checking vulnerabilities:', error);
       throw new Error('Failed to check vulnerabilities');

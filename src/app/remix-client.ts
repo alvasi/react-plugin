@@ -5,6 +5,7 @@ import OpenAI from 'openai';
 const OPENAI_API_KEY = process.env.REACT_APP_OPENAI_API_KEY;
 
 export class RemixClient extends PluginClient {
+
   constructor() {
     super()
     this.methods = ['checkVulnerabilities']
@@ -25,7 +26,7 @@ export class RemixClient extends PluginClient {
         frequency_penalty: 0,
         presence_penalty: 0,
       });
-      return response.choices[0]
+      return response.choices[0].message.content;
     } catch (error) {
       console.error('Error checking vulnerabilities:', error);
       throw new Error('Failed to check vulnerabilities');

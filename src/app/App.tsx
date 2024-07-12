@@ -6,11 +6,11 @@ const client = new RemixClient();
 export const App = () => {
   return (
     <div>
-      <p>Smart Contract Vulnerability Checker</p>
+      <p>Smart Contract Template Generator</p>
       <button onClick={async () => {
-        const prompt = await client.checkVulnerabilities();
+        const prompt = await client.createTemplate();
         console.log(prompt);
-      }}>Check Vulnerabilities</button>
+      }}>Create Template</button>
     </div>
   );
 };

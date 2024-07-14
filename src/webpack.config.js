@@ -13,7 +13,7 @@ module.exports = composePlugins(withNx(), (config) => {
       path: require.resolve('path-browserify'),
       os: require.resolve('os-browserify/browser'),
       stream: require.resolve('stream-browserify'),
-      crypto: require.resolve('crypto-browserify')
+      crypto: require.resolve('crypto-browserify'),
     }
   }
 

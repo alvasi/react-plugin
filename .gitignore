@@ -5,7 +5,7 @@
 /.pnp
 .pnp.js
 packages
-venv
+.venv
 .env
 
 # testing

@@ -9,7 +9,10 @@ module.exports = function override(config, env) {
       "os": require.resolve("os-browserify/browser"),
       "crypto": require.resolve("crypto-browserify"),
       "stream": require.resolve("stream-browserify"),
-      "vm": require.resolve("vm-browserify")
+      "vm": require.resolve("vm-browserify"),
+      "zlib": require.resolve("browserify-zlib"),
+      fs: false,
+      net: false
     }
   };
 

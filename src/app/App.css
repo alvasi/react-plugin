@@ -1,0 +1,23 @@
+.input-group.mb-3 {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    display: flex;
+    align-items: center;
+    padding: 10px;
+    box-shadow: 0 -2px 5px rgba(0,0,0,0.1); /* Optional: adds a shadow for better separation */
+  }
+  
+  .form-control {
+    display: block;
+    width: 100%; /* Take up as much width as possible */
+    height: auto; /* Allow height to grow */
+    min-height: 38px; /* Minimum height similar to an input field */
+    overflow: hidden; /* Prevent scrollbars */
+  }
+  
+  /* Additional styles for the button for consistency */
+  .btn-secondary {
+    margin-left: 5px;
+  }

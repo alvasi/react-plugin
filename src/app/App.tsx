@@ -34,8 +34,7 @@ export const App = () => {
     //     ))}
     //   </div>
     <div className="input-group mb-3">
-      <input
-        type="text"
+      <textarea
         className="form-control"
         value={message}
         onChange={(e) => setMessage(e.target.value)}

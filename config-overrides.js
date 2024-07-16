@@ -11,8 +11,14 @@ module.exports = function override(config, env) {
       "stream": require.resolve("stream-browserify"),
       "vm": require.resolve("vm-browserify"),
       "zlib": require.resolve("browserify-zlib"),
+      "https": require.resolve("https-browserify"),
+      "http": require.resolve("stream-http"),
+      "url": require.resolve("url/"),
+      "util": require.resolve("util/"),
+      "assert": require.resolve("assert/"),
       fs: false,
-      net: false
+      net: false,
+      tls: false
     }
   };
 

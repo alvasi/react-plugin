@@ -11,10 +11,10 @@ const port = 8000;
 
 app.post('/generate-template', (req, res) => {
   const { message } = req.body;
-  const pythonProcess = spawn('python3', ['text_generation.py', message], {
+  const pythonProcess = spawn('python3', ['test.py', message], {
     env: {
-        ...process.env,
-        PYTORCH_ENABLE_MPS_FALLBACK: '1',
+      ...process.env,
+      PYTORCH_ENABLE_MPS_FALLBACK: '1',
     }
   });
 

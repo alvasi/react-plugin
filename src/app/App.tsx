@@ -60,6 +60,7 @@ export const App = () => {
         <textarea
           className="form-control"
           value={message}
+          onKeyDown={(e) => e.key === 'Enter' && handleGenerateTemplate() && e.preventDefault()}
           onChange={(e) => setMessage(e.target.value)}
           placeholder="Describe desired smart contract"
           style={{ marginRight: '5px', flex: 'auto' }}

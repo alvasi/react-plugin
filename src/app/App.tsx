@@ -3,6 +3,9 @@ import { RemixClient } from './remix-client';
 import './App.css';
 
 const client = new RemixClient();
+client.onload(async () => {
+  client.init();
+});
 
 export const App = () => {
   const [message, setMessage] = useState('');
@@ -20,7 +23,7 @@ export const App = () => {
     setConversations([...conversations, newConversation]);
     setMessage('');
 
-    const response = await client.createTemplate(message);
+    const response = await client.message(message);
     console.log(response);
 
     setConversations(convs => convs.map((conv, index) =>
@@ -29,6 +32,9 @@ export const App = () => {
   };
 
   return (
+    // <div className="App">
+    //   <iframe src="https://alvasi-test.hf.space" style={{ width: '100%', height: '700px', border: 'none' }}></iframe>
+    // </div>
     <div className="container mt-3">
       <div className="conversations mb-2">
         {conversations.map((conv, index) => (

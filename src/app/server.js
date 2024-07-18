@@ -8,6 +8,8 @@ app.use(cors());
 app.use(express.json());
 
 const port = 8000;
+// app.post('/init')
+// app.post('/reset')
 
 app.post('/generate-template', (req, res) => {
   const { message } = req.body;

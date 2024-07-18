@@ -21,3 +21,7 @@
   .btn-secondary {
     margin-left: 5px;
   }
+
+  .container.mt-3 {
+    padding-bottom: 10px;
+  }

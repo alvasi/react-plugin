@@ -32,25 +32,26 @@ export const App = () => {
   };
 
   return (
-    // <div className="App">
-    //   <iframe src="https://alvasi-test.hf.space" style={{ width: '100%', height: '700px', border: 'none' }}></iframe>
-    // </div>
     <div className="container mt-3">
       <div className="conversations mb-2">
         {conversations.map((conv, index) => (
           <React.Fragment key={index}>
-            <div>
-              <strong>{conv.user}</strong>
-            </div>
-            <div className="mb-2">
-              {conv.message}
+            <div className="user-input">
+              <div>
+                <strong>{conv.user}</strong>
+              </div>
+              <div className="conversation-log mb-2">
+                {conv.message}
+              </div>
             </div>
             <hr style={{ borderColor: '#444' }} />
-            <div>
-              <strong>Assistant Bot</strong>
-            </div>
-            <div className="mb-2">
-              {conv.bot}
+            <div className="bot-response">
+              <div>
+                <strong>Assistant Bot</strong>
+              </div>
+              <div className="conversation-log mb-2">
+                {conv.bot}
+              </div>
             </div>
             <hr style={{ borderColor: '#444' }} />
           </React.Fragment>

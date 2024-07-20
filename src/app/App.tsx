@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { RemixClient } from './remix-client';
+import ReactMarkdown from 'react-markdown';
 import './App.css';
 
 const client = new RemixClient();
@@ -50,7 +51,7 @@ export const App = () => {
                 <strong>Assistant Bot</strong>
               </div>
               <div className="conversation-log mb-2">
-                {conv.bot}
+                <ReactMarkdown>{conv.bot[0]}</ReactMarkdown>
               </div>
             </div>
             <hr style={{ borderColor: '#444' }} />

@@ -4,9 +4,9 @@ import ReactMarkdown from 'react-markdown';
 import './App.css';
 
 const client = new RemixClient();
-client.onload(async () => {
-  client.init();
-});
+// client.onload(async () => {
+//   client.init();
+// });
 
 export const App = () => {
   const [message, setMessage] = useState('');
@@ -25,7 +25,6 @@ export const App = () => {
     setMessage('');
 
     const response = await client.message(message);
-    console.log(response);
 
     setConversations(convs => convs.map((conv, index) =>
       index === convs.length - 1 ? { ...conv, bot: response } : conv
@@ -51,7 +50,7 @@ export const App = () => {
                 <strong>Assistant Bot</strong>
               </div>
               <div className="conversation-log mb-2">
-                <ReactMarkdown>{conv.bot[0]}</ReactMarkdown>
+                <ReactMarkdown>{conv.bot}</ReactMarkdown>
               </div>
             </div>
             <hr style={{ borderColor: '#444' }} />

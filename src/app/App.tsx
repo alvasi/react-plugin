@@ -4,9 +4,9 @@ import ReactMarkdown from 'react-markdown';
 import './App.css';
 
 const client = new RemixClient();
-// client.onload(async () => {
-//   client.init();
-// });
+client.onload(async () => {
+  client.init();
+});
 
 export const App = () => {
   const [message, setMessage] = useState('');
@@ -29,6 +29,12 @@ export const App = () => {
     setConversations(convs => convs.map((conv, index) =>
       index === convs.length - 1 ? { ...conv, bot: response } : conv
     ));
+  };
+
+  const handleClear = () => {
+    client.init();
+    setConversations([]);
+    setMessage('');
   };
 
   return (
@@ -67,6 +73,7 @@ export const App = () => {
           style={{ marginRight: '5px', flex: 'auto' }}
         />
         <button className="btn btn-secondary" onClick={handleGenerateTemplate}>Enter</button>
+        <button className="btn btn-secondary" onClick={handleClear}>Clear</button>
       </div>
     </div>
   );

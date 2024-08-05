@@ -69,5 +69,11 @@ module.exports = composePlugins(withNx(), (config) => {
 
   config.experiments.syncWebAssembly = true
 
+  config.devServer = {
+    headers: {
+      'Permissions-Policy': 'clipboard-write=(self)'
+    }
+  };
+
   return config
 });

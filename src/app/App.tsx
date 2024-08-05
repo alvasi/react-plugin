@@ -1,6 +1,8 @@
-import React, { useState } from 'react';
+import React, { useState, useCallback } from 'react';
 import { RemixClient } from './remix-client';
 import ReactMarkdown from 'react-markdown';
+import { Prism as SyntaxHighlighter } from 'react-syntax-highlighter';
+import { tomorrow } from 'react-syntax-highlighter/dist/esm/styles/prism';
 import './App.css';
 
 const client = new RemixClient();
@@ -37,6 +39,46 @@ export const App = () => {
     setMessage('');
   };
 
+  const handleCopyText = (text) => {
+    const textArea = document.createElement('textarea');
+    textArea.value = text;
+    document.body.appendChild(textArea);
+    textArea.style.position = 'fixed';// Avoid scrolling to bottom
+    textArea.style.left = '-9999px';// Move element out of screen horizontally
+    textArea.focus();
+    textArea.select();
+    try {
+      const successful = document.execCommand('copy');
+      const msg = successful ? 'Copied!' : 'Press Ctrl+C to copy';
+      console.log(msg);
+      alert(msg);
+    } catch (err) {
+      console.error('Failed to copy with manual fallback:', err);
+      alert('Press Ctrl+C to copy');
+    }
+    document.body.removeChild(textArea);
+  };
+
+  const components = {
+    code({ node, inline, className, children, ...props }) {
+      const match = /language-(\w+)/.exec(className || '')
+      return !inline && match ? (
+        <div style={{ position: 'relative' }}>
+          <SyntaxHighlighter style={tomorrow} language={match[1]} PreTag="div" {...props} className="p-3">
+            {String(children).replace(/\n$/, '')}
+          </SyntaxHighlighter>
+          <button onClick={() => handleCopyText(String(children).replace(/\n$/, ''))} style={{ position: "absolute", right: "10px", top: "5px" }}>
+            Copy
+          </button>
+        </div>
+      ) : (
+        <code className={className} {...props}>
+          {children}
+        </code>
+      );
+    }
+  };
+
   return (
     <div className="container mt-3">
       <div className="conversations mb-2">
@@ -56,7 +98,7 @@ export const App = () => {
                 <strong>Assistant Bot</strong>
               </div>
               <div className="conversation-log mb-2">
-                <ReactMarkdown>{conv.bot}</ReactMarkdown>
+                <ReactMarkdown components={components}>{conv.bot}</ReactMarkdown>
               </div>
             </div>
             <hr style={{ borderColor: '#444' }} />

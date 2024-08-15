@@ -1,8 +1,10 @@
 import React, { useState, useCallback } from 'react';
-import { RemixClient } from './remix-client';
+import { RemixClient } from './deepseek-client';
+//import { RemixClient } from './claude-client';
 import ReactMarkdown from 'react-markdown';
 import { Prism as SyntaxHighlighter } from 'react-syntax-highlighter';
 import { tomorrow } from 'react-syntax-highlighter/dist/esm/styles/prism';
+import tutorialIcon from '../assets/tutorial_icon.svg'
 import './App.css';
 
 const client = new RemixClient();
@@ -11,8 +13,11 @@ client.onload(async () => {
 });
 
 export const App = () => {
+  const [showTutorial, setShowTutorial] = useState(false);
   const [message, setMessage] = useState('');
   const [conversations, setConversations] = useState([]);
+
+  const toggleTutorial = () => setShowTutorial(!showTutorial);
 
   const handleGenerateTemplate = async () => {
     if (!message.trim()) return;
@@ -81,6 +86,19 @@ export const App = () => {
 
   return (
     <div className="container mt-3">
+      <div className="tutorial">
+        <button className="btn btn-secondary tutorial-btn" onClick={toggleTutorial}><img src={tutorialIcon} alt="Tutorial" /></button>
+      </div>
+      {showTutorial && (
+        <div className="tutorial-content">
+          <p>How to word prompts:</p>
+          <ul>
+            <li>Be clear and concise.</li>
+            <li>Specify the context if necessary.</li>
+            <li>Use simple language.</li>
+          </ul>
+        </div>
+      )}
       <div className="conversations mb-2">
         {conversations.map((conv, index) => (
           <React.Fragment key={index}>

@@ -3,6 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "@anthropic-ai/sdk": "^0.25.1",
     "@remixproject/plugin-iframe": "^0.3.38",
     "@remixproject/plugin-webview": "^0.3.38",
     "@testing-library/jest-dom": "^5.17.0",
@@ -16,6 +17,7 @@
     "cors": "^2.8.5",
     "express": "^4.19.2",
     "https-browserify": "^1.0.0",
+    "https-proxy-agent": "^7.0.5",
     "install": "^0.13.0",
     "npm": "^10.8.1",
     "process": "^0.11.10",

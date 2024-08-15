@@ -14,7 +14,7 @@ export class RemixClient extends PluginClient {
 
   async init() {
     this.claudeClient = new Anthropic({
-      apiKey: "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"
+      apiKey: //"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"
     });
   }
 

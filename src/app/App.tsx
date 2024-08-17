@@ -50,6 +50,14 @@ export const App = () => {
     setMessage('');
   };
 
+  const onKeyDownHandler = (e) => {
+    // Check for 'Enter' without 'Shift' to trigger template generation
+    if (e.key === 'Enter' && !e.shiftKey) {
+      handleGenerateTemplate();
+      e.preventDefault();
+    }
+  };
+
   const handleCopyText = (text) => {
     const textArea = document.createElement('textarea');
     textArea.value = text;
@@ -133,7 +141,7 @@ export const App = () => {
         <textarea
           className="form-control"
           value={message}
-          onKeyDown={(e) => e.key === 'Enter' && !e.shiftKey && handleGenerateTemplate() && e.preventDefault()}
+          onKeyDown={onKeyDownHandler}
           onChange={(e) => setMessage(e.target.value)}
           placeholder="Describe desired smart contract"
           style={{ marginRight: '5px', flex: 'auto' }}

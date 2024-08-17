@@ -14,30 +14,58 @@ export class RemixClient extends PluginClient {
 
   async init() {
     this.deepseekClient = new OpenAI({
-      apiKey: "sk-7885a3110d2646f0bfb7e8a5732045fe", //process.env.DEEPSEEK_API,
+      apiKey: process.env.REACT_APP_DEEPSEEK_API,
       baseURL: "https://api.deepseek.com",
       dangerouslyAllowBrowser: true
     })
     this.messages.push({ content: "You are a useful coder that codes secure solidity smart contracts based on user's prompt. Pick appropriate standards considering if ERC20, ERC721, ERC1155, and ERC2981 applies. Avoid vulnerabilities such as reentrancy with check-effects-interaction, avoid low level calls, be careful of gas costs (e.g., avoid for loops over dynamic arrays) and try to use more different variable names. Implement as much as possible. Ask user if further clarification for functionality is needed", role: "system" })
   }
 
-  async message(message = "I want a smart contract for purchasing NFTs") {
+  // streaming response, user sees content as it is being generated
+  async message(message = "I want a smart contract for purchasing NFTs", onStreamUpdate) {
     try {
       this.messages.push({ content: message, role: "user" });
-      const params: OpenAI.ChatCompletionCreateParams = {
+      const stream = await this.deepseekClient.beta.chat.completions.stream({
         model: "deepseek-coder",
         messages: this.messages,
         max_tokens: 2048,
         temperature: 1,
         top_p: 1,
-        stream: false,
+        stream: true,
+      })
+
+      for await (const chunk of stream) {
+        const content = chunk.choices[0]?.delta?.content || '';
+        onStreamUpdate(content);
       }
-      const chatCompletion: OpenAI.Chat.ChatCompletion = await this.deepseekClient.chat.completions.create(params);
+
+      const chatCompletion: OpenAI.Chat.ChatCompletion = await stream.finalChatCompletion();
       this.messages.push({ content: chatCompletion.choices[0].message.content, role: "assistant" });
-      return chatCompletion.choices[0].message.content;
-    } catch (error){
-      console.error("Error in message method: ", error);
+
+    } catch (error) {
+      console.error("Error in message methodL ", error);
       throw error;
     }
   }
+
+  // // non-streaming response, user only sees content after it is generated
+  // async message(message = "I want a smart contract for purchasing NFTs") {
+  //   try {
+  //     this.messages.push({ content: message, role: "user" });
+  //     const params: OpenAI.ChatCompletionCreateParams = {
+  //       model: "deepseek-coder",
+  //       messages: this.messages,
+  //       max_tokens: 2048,
+  //       temperature: 1,
+  //       top_p: 1,
+  //       stream: false,
+  //     }
+  //     const chatCompletion: OpenAI.Chat.ChatCompletion = await this.deepseekClient.chat.completions.create(params);
+  //     this.messages.push({ content: chatCompletion.choices[0].message.content, role: "assistant" });
+  //     return chatCompletion.choices[0].message.content;
+  //   } catch (error){
+  //     console.error("Error in message method: ", error);
+  //     throw error;
+  //   }
+  // }
 }

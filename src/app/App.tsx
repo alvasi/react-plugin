@@ -1,6 +1,6 @@
 import React, { useState, useCallback } from 'react';
 import { RemixClient } from './deepseek-client';
-//import { RemixClient } from './claude-client';
+// import { RemixClient } from './claude-client';
 import ReactMarkdown from 'react-markdown';
 import { Prism as SyntaxHighlighter } from 'react-syntax-highlighter';
 import { tomorrow } from 'react-syntax-highlighter/dist/esm/styles/prism';
@@ -25,17 +25,23 @@ export const App = () => {
     const newConversation = {
       user: 'You',
       message: message.trim(),
-      bot: 'Loading response...'
+      bot: ''
     }
 
     setConversations([...conversations, newConversation]);
     setMessage('');
 
-    const response = await client.message(message);
+    await client.message(message, (streamedResponse) => {
+      setConversations(convs => convs.map((conv, index) =>
+        index === convs.length - 1 ? { ...conv, bot: conv.bot + streamedResponse } : conv
+      ));
+    });
 
-    setConversations(convs => convs.map((conv, index) =>
-      index === convs.length - 1 ? { ...conv, bot: response } : conv
-    ));
+    // // non-streaming response
+    // const response = await client.message(message);
+    // setConversations(convs => convs.map((conv, index) =>
+    //   index === convs.length - 1 ? { ...conv, bot: response } : conv
+    // ));
   };
 
   const handleClear = () => {
@@ -127,7 +133,7 @@ export const App = () => {
         <textarea
           className="form-control"
           value={message}
-          onKeyDown={(e) => e.key === 'Enter' && handleGenerateTemplate() && e.preventDefault()}
+          onKeyDown={(e) => e.key === 'Enter' && !e.shiftKey && handleGenerateTemplate() && e.preventDefault()}
           onChange={(e) => setMessage(e.target.value)}
           placeholder="Describe desired smart contract"
           style={{ marginRight: '5px', flex: 'auto' }}

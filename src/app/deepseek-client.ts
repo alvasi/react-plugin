@@ -18,7 +18,7 @@ export class RemixClient extends PluginClient {
       baseURL: "https://api.deepseek.com",
       dangerouslyAllowBrowser: true
     })
-    this.messages.push({ content: "You are a useful coder that codes secure solidity smart contracts based on user's prompt. Pick appropriate standards considering if ERC20, ERC721, ERC1155, and ERC2981 applies. Avoid vulnerabilities such as reentrancy with check-effects-interaction, avoid low level calls, be careful of gas costs (e.g., avoid for loops over dynamic arrays) and try to use more different variable names. Implement as much as possible. Ask user if further clarification for functionality is needed", role: "system" })
+    this.messages.push({ content: "You are a useful coder that codes secure solidity smart contracts based on user's prompt. Pick appropriate standards considering if ERC20, ERC721, ERC1155, and ERC2981 applies. Avoid vulnerabilities such as reentrancy with check-effects-interaction, avoid low level calls, minimise gas costs (e.g., avoid for loops over dynamic arrays). Implement as much as possible. Ask user if further clarification for functionality is needed", role: "system" })
   }
 
   // streaming response, user sees content as it is being generated
@@ -40,6 +40,7 @@ export class RemixClient extends PluginClient {
       }
 
       const chatCompletion: OpenAI.Chat.ChatCompletion = await stream.finalChatCompletion();
+      console.log(chatCompletion.choices[0].message.content);
       this.messages.push({ content: chatCompletion.choices[0].message.content, role: "assistant" });
 
     } catch (error) {

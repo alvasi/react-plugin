@@ -1,0 +1,29 @@
+name: Run Tests
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v2
+      # Checkout code to the GitHub Actions runner
+
+    - name: Set up Node.js
+      uses: actions/setup-node@v3
+      with:
+        node-version: '16'
+        # Set up the node version you are using
+
+    - name: Install Dependencies
+      run: npm install
+      # Install npm dependencies
+
+    - name: Run Tests
+      run: npm test
+      # Run test script defined in package.json

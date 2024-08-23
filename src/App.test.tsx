@@ -1,5 +1,6 @@
 import { describe, it, expect, beforeEach } from 'vitest';
 import { render, screen, fireEvent } from '@testing-library/react';
+import '@testing-library/jest-dom';
 import userEvent from '@testing-library/user-event';
 import App from './app/App';
 
@@ -16,7 +17,7 @@ describe('App Component', () => {
   it('toggles tutorial on button click', async () => {
     const toggleButton = screen.getByRole('button', { name: /tutorial/i });
     expect(screen.queryByText(/How to word prompts:/i)).not.toBeInTheDocument();
-    
+
     await userEvent.click(toggleButton);
     expect(screen.getByText(/How to word prompts:/i)).toBeInTheDocument();
 

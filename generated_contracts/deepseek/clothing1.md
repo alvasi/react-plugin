@@ -42,11 +42,13 @@ contract SupplyChainTracker {
 This contract allows for the addition of transactions detailing the supply chain steps, including the type and quantity of material, cost, and the name of the farm. Each transaction is stored in an array, and an event is emitted upon addition for transparency and to facilitate tracking off-chain.
 
 ### Security and Efficiency Considerations:
+
 - **Check-Effects-Interaction Pattern**: The contract follows this pattern by updating the state (adding the transaction to the array and incrementing the transaction count) before emitting the event. This reduces the risk of reentrancy attacks.
 - **Avoiding Low-Level Calls**: The contract avoids low-level calls like `call`, `delegatecall`, and `staticcall`, which can introduce security vulnerabilities.
 - **Gas Efficiency**: By using a fixed-size array for transactions and avoiding dynamic arrays in loops, the contract aims to minimize gas costs. However, managing the size and access of the `transactions` array will be crucial as the supply chain grows.
 
 ### Further Functionality:
+
 - **Access Control**: Implementing role-based access control (RBAC) to restrict who can add transactions could enhance security and ensure only authorized parties can update the supply chain data.
 - **Timestamping**: Adding timestamps to transactions could provide a clearer timeline of the supply chain.
 - **Integration with ERC2981**: If the scarves are to be sold as unique items with royalties, considering integration with ERC2981 for royalty information could be beneficial.
@@ -56,7 +58,7 @@ Would you like to add any specific features or functionalities to the contract, 
 **user**:
 For each transaction, it should record 1. Material Type (cashmere or wool) 2. Quantity (in kilograms) 3. Cost (in GBP) 4. Origin of the material (country and specific farm) 5. Farm certification status (certified or not certified) 6. Delivery duration (in days) 7. Mode of delivery (air, sea, or land) and 8. Percentage of material that passed quality checks.
 
-**assistant**: 
+**assistant**:
 To enhance the contract to include the additional details you've specified, we'll need to expand the `Transaction` struct and the `addTransaction` function to accommodate these new fields. Here's how the updated contract might look:
 
 ```solidity
@@ -106,6 +108,7 @@ contract SupplyChainTracker {
 ```
 
 ### Updated Features:
+
 1. **Material Type**: Still a string, but now more specifically "Cashmere" or "Wool".
 2. **Quantity**: Measured in kilograms.
 3. **Cost**: Measured in GBP.
@@ -116,11 +119,13 @@ contract SupplyChainTracker {
 8. **Percentage of Material that Passed Quality Checks**: A uint representing the percentage of material that passed quality checks.
 
 ### Security and Efficiency Considerations:
+
 - **Check-Effects-Interaction Pattern**: The contract continues to follow this pattern by updating the state before emitting the event.
 - **Avoiding Low-Level Calls**: The contract still avoids low-level calls.
 - **Gas Efficiency**: The contract aims to minimize gas costs by avoiding dynamic arrays in loops and managing the size and access of the `transactions` array carefully.
 
 ### Further Enhancements:
+
 - **Access Control**: Implementing role-based access control (RBAC) to restrict who can add transactions could enhance security.
 - **Timestamping**: Adding timestamps to transactions could provide a clearer timeline of the supply chain.
 - **Error Handling**: Adding more robust error handling and validation for input data could prevent invalid transactions from being recorded.

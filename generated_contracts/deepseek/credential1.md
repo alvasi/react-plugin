@@ -60,17 +60,20 @@ contract CourseMicroCredentials is ERC1155, Ownable {
 ```
 
 ### Key Features:
+
 1. **Non-Transferable Tokens**: The tokens are non-transferable by overriding the `_beforeTokenTransfer` function to only allow minting and burning.
 2. **Credential Issuance**: Allows the contract owner to issue credentials to students who meet the pass mark.
 3. **Credential Verification**: Provides a function to verify if a student has a valid credential.
 4. **Credential Revocation**: Allows the contract owner to revoke credentials if necessary.
 
 ### Security and Efficiency Considerations:
+
 - **Check-Effects-Interaction Pattern**: The contract follows this pattern by updating the state before making external calls to prevent reentrancy attacks.
 - **Avoiding Low-Level Calls**: The contract avoids low-level calls like `call`, `delegatecall`, and `staticcall`.
 - **Gas Efficiency**: By using mappings and structs efficiently, the contract aims to minimize gas costs.
 
 ### Further Enhancements:
+
 - **Access Control**: Implementing more granular roles (e.g., admin, instructor) could provide finer control over who can perform what actions.
 - **Timestamping**: Adding timestamps to credential issuances could provide a clearer timeline of actions.
 - **Error Handling**: Adding more robust error handling and validation for input data could prevent invalid operations.
@@ -137,17 +140,20 @@ contract CourseMicroCredentials is ERC721, Ownable {
 ```
 
 ### Key Features:
+
 1. **Soulbound Tokens**: The tokens are non-transferable by overriding the `_beforeTokenTransfer` function to only allow minting and burning.
 2. **Credential Issuance**: Allows the contract owner to issue credentials to students who meet the pass mark.
 3. **Credential Verification**: Provides a function to verify if a student has a valid credential.
 4. **Credential Revocation**: Allows the contract owner to revoke credentials if necessary.
 
 ### Security and Efficiency Considerations:
+
 - **Check-Effects-Interaction Pattern**: The contract follows this pattern by updating the state before making external calls to prevent reentrancy attacks.
 - **Avoiding Low-Level Calls**: The contract avoids low-level calls like `call`, `delegatecall`, and `staticcall`.
 - **Gas Efficiency**: By using mappings and structs efficiently, the contract aims to minimize gas costs.
 
 ### Further Enhancements:
+
 - **Access Control**: Implementing more granular roles (e.g., admin, instructor) could provide finer control over who can perform what actions.
 - **Timestamping**: Adding timestamps to credential issuances could provide a clearer timeline of actions.
 - **Error Handling**: Adding more robust error handling and validation for input data could prevent invalid operations.

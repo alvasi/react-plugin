@@ -15,36 +15,46 @@ export class RemixClient extends PluginClient {
   async init() {
     this.deepseekClient = new OpenAI({
       apiKey: process.env.REACT_APP_DEEPSEEK_API,
-      baseURL: "https://api.deepseek.com",
-      dangerouslyAllowBrowser: true
-    })
-    this.messages.push({ content: "You are a useful coder that codes secure solidity smart contracts based on user's prompt. Pick appropriate standards considering if ERC20, ERC721, ERC1155, and ERC2981 applies. Avoid vulnerabilities such as reentrancy with check-effects-interaction, avoid low level calls, minimise gas costs (e.g., avoid for loops over dynamic arrays). Implement as much as possible. Ask user if further clarification for functionality is needed", role: "system" })
+      baseURL: 'https://api.deepseek.com',
+      dangerouslyAllowBrowser: true,
+    });
+    this.messages.push({
+      content:
+        "You are a useful coder that codes secure solidity smart contracts based on user's prompt. Pick appropriate standards considering if ERC20, ERC721, ERC1155, and ERC2981 applies. Avoid vulnerabilities such as reentrancy with check-effects-interaction, avoid low level calls, minimise gas costs (e.g., avoid for loops over dynamic arrays). Implement as much as possible. Ask user if further clarification for functionality is needed",
+      role: 'system',
+    });
   }
 
   // streaming response, user sees content as it is being generated
-  async message(message = "I want a smart contract for purchasing NFTs", onStreamUpdate) {
+  async message(
+    message = 'I want a smart contract for purchasing NFTs',
+    onStreamUpdate,
+  ) {
     try {
-      this.messages.push({ content: message, role: "user" });
+      this.messages.push({ content: message, role: 'user' });
       const stream = await this.deepseekClient.beta.chat.completions.stream({
-        model: "deepseek-coder",
+        model: 'deepseek-coder',
         messages: this.messages,
         max_tokens: 2048,
         temperature: 1,
         top_p: 1,
         stream: true,
-      })
+      });
 
       for await (const chunk of stream) {
         const content = chunk.choices[0]?.delta?.content || '';
         onStreamUpdate(content);
       }
 
-      const chatCompletion: OpenAI.Chat.ChatCompletion = await stream.finalChatCompletion();
+      const chatCompletion: OpenAI.Chat.ChatCompletion =
+        await stream.finalChatCompletion();
       console.log(chatCompletion.choices[0].message.content);
-      this.messages.push({ content: chatCompletion.choices[0].message.content, role: "assistant" });
-
+      this.messages.push({
+        content: chatCompletion.choices[0].message.content,
+        role: 'assistant',
+      });
     } catch (error) {
-      console.error("Error in message methodL ", error);
+      console.error('Error in message methodL ', error);
       throw error;
     }
   }

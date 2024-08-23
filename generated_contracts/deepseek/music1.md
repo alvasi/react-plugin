@@ -80,17 +80,20 @@ contract MusicStreamingRoyalties {
 ```
 
 ### Key Features:
+
 1. **Royalty Distribution**: Automatically calculates and distributes royalties based on streaming duration and predefined percentages.
 2. **Stream Recording**: Records each stream with details such as listener, artist, label, duration, and earnings.
 3. **Event Logging**: Emits events for stream recording and royalty distribution for transparency and tracking.
 4. **Owner Control**: Allows the contract owner to withdraw any remaining earnings.
 
 ### Security and Efficiency Considerations:
+
 - **Check-Effects-Interaction Pattern**: The contract follows this pattern by updating the state before making external calls to prevent reentrancy attacks.
 - **Avoiding Low-Level Calls**: The contract uses `call` for transferring Ether, which is safer than `transfer` or `send`.
 - **Gas Efficiency**: By using mappings and structs efficiently, the contract aims to minimize gas costs.
 
 ### Further Enhancements:
+
 - **Access Control**: Implementing more granular roles (e.g., admin, artist, label) could provide finer control over who can perform what actions.
 - **Timestamping**: Adding timestamps to streams could provide a clearer timeline of actions.
 - **Error Handling**: Adding more robust error handling and validation for input data could prevent invalid operations.
@@ -199,6 +202,7 @@ contract MusicStreamingRoyalties is Ownable, IERC2981 {
 ```
 
 ### Key Features:
+
 1. **ERC-2981 Integration**: Allows setting royalty percentages for artists and labels, similar to ERC-2981.
 2. **Royalty Distribution**: Automatically calculates and distributes royalties based on streaming duration and predefined percentages.
 3. **Stream Recording**: Records each stream with details such as listener, artist, label, duration, and earnings.
@@ -206,11 +210,13 @@ contract MusicStreamingRoyalties is Ownable, IERC2981 {
 5. **Owner Control**: Allows the contract owner to withdraw any remaining earnings and set royalty percentages.
 
 ### Security and Efficiency Considerations:
+
 - **Check-Effects-Interaction Pattern**: The contract follows this pattern by updating the state before making external calls to prevent reentrancy attacks.
 - **Avoiding Low-Level Calls**: The contract uses `call` for transferring Ether, which is safer than `transfer` or `send`.
 - **Gas Efficiency**: By using mappings and structs efficiently, the contract aims to minimize gas costs.
 
 ### Further Enhancements:
+
 - **Access Control**: Implementing more granular roles (e.g., admin, artist, label) could provide finer control over who can perform what actions.
 - **Timestamping**: Adding timestamps to streams could provide a clearer timeline of actions.
 - **Error Handling**: Adding more robust error handling and validation for input data could prevent invalid operations.

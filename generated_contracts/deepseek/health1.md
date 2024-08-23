@@ -66,6 +66,7 @@ contract HealthRecordManager {
 ```
 
 ### Key Features:
+
 1. **Access Control**: Only authorized entities (doctors and hospitals) can add, update, or access health records.
 2. **Session Management**: Unauthorized attempts to access records result in session termination by the `onlyAuthorized` modifier.
 3. **Data Storage**: Health records are stored in a mapping, with each record linked to the patient's Ethereum address.
@@ -73,12 +74,14 @@ contract HealthRecordManager {
 5. **Record Sealing**: Records can be sealed to prevent further updates.
 
 ### Security and Privacy Considerations:
+
 - **Encryption**: The contract assumes that health record data is encrypted before being stored. This is crucial for protecting patient privacy.
 - **Access Control**: The `onlyAuthorized` modifier ensures that only authorized entities can perform certain actions.
 - **Session Termination**: Unauthorized attempts to access records are met with a `require` statement that terminates the transaction.
 - **Gas Efficiency**: The contract avoids dynamic arrays and complex data structures to minimize gas costs.
 
 ### Further Enhancements:
+
 - **Role-Based Access Control (RBAC)**: Implementing more granular roles (e.g., admin, doctor, nurse) could provide finer control over who can perform what actions.
 - **Timestamping**: Adding timestamps to records and access logs could provide a clearer timeline of actions.
 - **Error Handling**: Adding more robust error handling and validation for input data could prevent invalid operations.
@@ -157,6 +160,7 @@ contract HealthRecordManager {
 ```
 
 ### Key Features:
+
 1. **Role-Based Access Control (RBAC)**: Different roles (Doctor, Patient, Hospital) have specific permissions.
 2. **Registration**: Only Doctors and Hospitals can register patients.
 3. **Access Control**:
@@ -166,22 +170,24 @@ contract HealthRecordManager {
 5. **Logging**: Access logs are maintained to track who accessed which patient's records.
 
 ### Security and Privacy Considerations:
+
 - **Encryption**: The contract assumes that health record data is encrypted before being stored.
 - **Access Control**: The `onlyAuthorized` modifier ensures that only entities with the appropriate role can perform certain actions.
 - **Session Termination**: Unauthorized attempts to access records are met with a `require` statement that terminates the transaction.
 - **Gas Efficiency**: The contract avoids dynamic arrays and complex data structures to minimize gas costs.
 
 ### Further Enhancements:
+
 - **Timestamping**: Adding timestamps to records and access logs could provide a clearer timeline of actions.
 - **Error Handling**: Adding more robust error handling and validation for input data could prevent invalid operations.
 
 Would you like to add any specific features or functionalities to the contract, such as timestamping or more detailed error handling?
 
 **user**: I am getting the following error: Warning: Function state mutability can be restricted to view
-  --> contracts/health1.sol:55:5:
-   |
-55 |     function accessOwnRecord() public onlyAuthorized(Role.Patient) returns (string memory) {
-   |     ^ (Relevant source part starts here and spans across multiple lines).
+--> contracts/health1.sol:55:5:
+|
+55 | function accessOwnRecord() public onlyAuthorized(Role.Patient) returns (string memory) {
+| ^ (Relevant source part starts here and spans across multiple lines).
 
 **assistant**: The warning you're seeing indicates that the function `accessOwnRecord` can be marked as `view` because it does not modify the state of the blockchain. In Solidity, functions can have different state mutability:
 
@@ -253,15 +259,18 @@ contract HealthRecordManager {
 ```
 
 ### Key Changes:
+
 - The `accessOwnRecord` function is now marked as `view`, indicating that it only reads state and does not modify it.
 
 ### Security and Privacy Considerations:
+
 - **Encryption**: The contract assumes that health record data is encrypted before being stored.
 - **Access Control**: The `onlyAuthorized` modifier ensures that only entities with the appropriate role can perform certain actions.
 - **Session Termination**: Unauthorized attempts to access records are met with a `require` statement that terminates the transaction.
 - **Gas Efficiency**: The contract avoids dynamic arrays and complex data structures to minimize gas costs.
 
 ### Further Enhancements:
+
 - **Timestamping**: Adding timestamps to records and access logs could provide a clearer timeline of actions.
 - **Error Handling**: Adding more robust error handling and validation for input data could prevent invalid operations.
 

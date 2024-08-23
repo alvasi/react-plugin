@@ -1,7 +1,7 @@
-const {composePlugins, withNx} = require('@nrwl/webpack')
-const webpack = require('webpack')
-const TerserPlugin = require('terser-webpack-plugin')
-const CssMinimizerPlugin = require('css-minimizer-webpack-plugin')
+const { composePlugins, withNx } = require('@nrwl/webpack');
+const webpack = require('webpack');
+const TerserPlugin = require('terser-webpack-plugin');
+const CssMinimizerPlugin = require('css-minimizer-webpack-plugin');
 
 // Nx plugins for webpack.
 module.exports = composePlugins(withNx(), (config) => {
@@ -14,18 +14,20 @@ module.exports = composePlugins(withNx(), (config) => {
       os: require.resolve('os-browserify/browser'),
       stream: require.resolve('stream-browserify'),
       crypto: require.resolve('crypto-browserify'),
-    }
+    },
   };
 
   config.plugins = [
     new webpack.ProvidePlugin({
       process: 'process/browser',
-      'process.env.REACT_APP_OPENAI_API_KEY': JSON.stringify(process.env.REACT_APP_OPENAI_API_KEY),
-      'process.env.DEEPSEEK_API': JSON.stringify(process.env.DEEPSEEK_API)
+      'process.env.REACT_APP_OPENAI_API_KEY': JSON.stringify(
+        process.env.REACT_APP_OPENAI_API_KEY,
+      ),
+      'process.env.DEEPSEEK_API': JSON.stringify(process.env.DEEPSEEK_API),
     }),
     new webpack.DefinePlugin({
-      'process.env': JSON.stringify(process.env)
-    })
+      'process.env': JSON.stringify(process.env),
+    }),
   ];
 
   // add externals
@@ -35,7 +37,7 @@ module.exports = composePlugins(withNx(), (config) => {
   };
 
   // add public path
-  config.output.publicPath = './'
+  config.output.publicPath = './';
 
   // source-map loader
   config.module.rules.push({
@@ -44,7 +46,7 @@ module.exports = composePlugins(withNx(), (config) => {
     enforce: 'pre',
   });
 
-  config.ignoreWarnings = [/Failed to parse source map/] // ignore source-map-loader warnings
+  config.ignoreWarnings = [/Failed to parse source map/]; // ignore source-map-loader warnings
 
   // set minimizer
   config.optimization.minimizer = [
@@ -67,13 +69,13 @@ module.exports = composePlugins(withNx(), (config) => {
     ignored: /node_modules/,
   };
 
-  config.experiments.syncWebAssembly = true
+  config.experiments.syncWebAssembly = true;
 
   config.devServer = {
     headers: {
-      'Permissions-Policy': 'clipboard-write=(self)'
-    }
+      'Permissions-Policy': 'clipboard-write=(self)',
+    },
   };
 
-  return config
+  return config;
 });

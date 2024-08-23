@@ -4,7 +4,7 @@ import { RemixClient } from './deepseek-client';
 import ReactMarkdown from 'react-markdown';
 import { Prism as SyntaxHighlighter } from 'react-syntax-highlighter';
 import { tomorrow } from 'react-syntax-highlighter/dist/esm/styles/prism';
-import tutorialIcon from '../assets/tutorial_icon.svg'
+import tutorialIcon from '../assets/tutorial_icon.svg';
 import './App.css';
 
 const client = new RemixClient();
@@ -25,16 +25,20 @@ export const App = () => {
     const newConversation = {
       user: 'You',
       message: message.trim(),
-      bot: ''
-    }
+      bot: '',
+    };
 
     setConversations([...conversations, newConversation]);
     setMessage('');
 
     await client.message(message, (streamedResponse) => {
-      setConversations(convs => convs.map((conv, index) =>
-        index === convs.length - 1 ? { ...conv, bot: conv.bot + streamedResponse } : conv
-      ));
+      setConversations((convs) =>
+        convs.map((conv, index) =>
+          index === convs.length - 1
+            ? { ...conv, bot: conv.bot + streamedResponse }
+            : conv,
+        ),
+      );
     });
 
     // // non-streaming response
@@ -62,8 +66,8 @@ export const App = () => {
     const textArea = document.createElement('textarea');
     textArea.value = text;
     document.body.appendChild(textArea);
-    textArea.style.position = 'fixed';// Avoid scrolling to bottom
-    textArea.style.left = '-9999px';// Move element out of screen horizontally
+    textArea.style.position = 'fixed'; // Avoid scrolling to bottom
+    textArea.style.left = '-9999px'; // Move element out of screen horizontally
     textArea.focus();
     textArea.select();
     try {
@@ -80,13 +84,22 @@ export const App = () => {
 
   const components = {
     code({ node, inline, className, children, ...props }) {
-      const match = /language-(\w+)/.exec(className || '')
+      const match = /language-(\w+)/.exec(className || '');
       return !inline && match ? (
         <div style={{ position: 'relative' }}>
-          <SyntaxHighlighter style={tomorrow} language={match[1]} PreTag="div" {...props} className="p-3">
+          <SyntaxHighlighter
+            style={tomorrow}
+            language={match[1]}
+            PreTag="div"
+            {...props}
+            className="p-3"
+          >
             {String(children).replace(/\n$/, '')}
           </SyntaxHighlighter>
-          <button onClick={() => handleCopyText(String(children).replace(/\n$/, ''))} style={{ position: "absolute", right: "10px", top: "5px" }}>
+          <button
+            onClick={() => handleCopyText(String(children).replace(/\n$/, ''))}
+            style={{ position: 'absolute', right: '10px', top: '5px' }}
+          >
             Copy
           </button>
         </div>
@@ -95,13 +108,18 @@ export const App = () => {
           {children}
         </code>
       );
-    }
+    },
   };
 
   return (
     <div className="container mt-3">
       <div className="tutorial">
-        <button className="btn btn-secondary tutorial-btn" onClick={toggleTutorial}><img src={tutorialIcon} alt="Tutorial" /></button>
+        <button
+          className="btn btn-secondary tutorial-btn"
+          onClick={toggleTutorial}
+        >
+          <img src={tutorialIcon} alt="Tutorial" />
+        </button>
       </div>
       {showTutorial && (
         <div className="tutorial-content">
@@ -120,9 +138,7 @@ export const App = () => {
               <div>
                 <strong>{conv.user}</strong>
               </div>
-              <div className="conversation-log mb-2">
-                {conv.message}
-              </div>
+              <div className="conversation-log mb-2">{conv.message}</div>
             </div>
             <hr style={{ borderColor: '#444' }} />
             <div className="bot-response">
@@ -130,7 +146,9 @@ export const App = () => {
                 <strong>Assistant Bot</strong>
               </div>
               <div className="conversation-log mb-2">
-                <ReactMarkdown components={components}>{conv.bot}</ReactMarkdown>
+                <ReactMarkdown components={components}>
+                  {conv.bot}
+                </ReactMarkdown>
               </div>
             </div>
             <hr style={{ borderColor: '#444' }} />
@@ -146,8 +164,12 @@ export const App = () => {
           placeholder="Describe desired smart contract"
           style={{ marginRight: '5px', flex: 'auto' }}
         />
-        <button className="btn btn-secondary" onClick={handleGenerateTemplate}>Enter</button>
-        <button className="btn btn-secondary" onClick={handleClear}>Clear</button>
+        <button className="btn btn-secondary" onClick={handleGenerateTemplate}>
+          Enter
+        </button>
+        <button className="btn btn-secondary" onClick={handleClear}>
+          Clear
+        </button>
       </div>
     </div>
   );

@@ -52,20 +52,20 @@ contract TournamentRewards is ERC1155, Ownable {
 }
 ```
 
-### Key Features:
+### Key Features
 
 1. **ERC1155 Standard**: Manages multiple types of rewards (gold, mystery boxes, unique character skins) in a single contract.
 2. **Reward Distribution**: Distributes rewards based on player rankings.
 3. **Ownable**: Ensures only the owner (tournament organizer) can distribute rewards.
 4. **Withdrawal Function**: Allows the owner to withdraw unused tokens.
 
-### Security and Efficiency Considerations:
+### Security and Efficiency Considerations
 
 - **Check-Effects-Interaction Pattern**: The contract follows this pattern by updating the state before transferring tokens.
 - **Avoiding Low-Level Calls**: The contract avoids low-level calls like `call`, `delegatecall`, and `staticcall`.
 - **Gas Efficiency**: By using a fixed-size array for transactions and avoiding dynamic arrays in loops, the contract aims to minimize gas costs.
 
-### Further Enhancements:
+### Further Enhancements
 
 - **Timestamping**: Adding timestamps to reward distributions could provide a clearer timeline of actions.
 - **Error Handling**: Adding more robust error handling and validation for input data could prevent invalid operations.
@@ -133,20 +133,20 @@ contract TournamentRewards is ERC1155, Ownable {
 }
 ```
 
-### Key Changes:
+### Key Changes
 
 1. **New Token ID**: Added a new token ID `EVENT_EXCLUSIVE_RING` for the event-exclusive ring.
 2. **Ring Distribution**: Ensured that the ring is distributed to one of the top 10 players randomly.
 3. **State Variable**: Introduced a boolean `ringDistributed` to ensure the ring is only distributed once.
 
-### Security and Efficiency Considerations:
+### Security and Efficiency Considerations
 
 - **Random Distribution**: The ring is distributed randomly to one of the top 10 players using a pseudo-random number generator based on block timestamp and difficulty. Note that this method is not truly random and can be manipulated by miners. For a more secure random number generation, consider using oracles or other decentralized random number generation methods.
 - **Check-Effects-Interaction Pattern**: The contract follows this pattern by updating the state before transferring tokens.
 - **Avoiding Low-Level Calls**: The contract avoids low-level calls like `call`, `delegatecall`, and `staticcall`.
 - **Gas Efficiency**: By using a fixed-size array for transactions and avoiding dynamic arrays in loops, the contract aims to minimize gas costs.
 
-### Further Enhancements:
+### Further Enhancements
 
 - **Secure Randomness**: Implement a more secure method for generating random numbers.
 - **Timestamping**: Adding timestamps to reward distributions could provide a clearer timeline of actions.
@@ -245,20 +245,20 @@ contract TournamentRewards is ERC1155, Ownable, VRFConsumerBase {
 }
 ```
 
-### Key Changes:
+### Key Changes
 
 1. **Chainlink VRF Integration**: Integrated Chainlink VRF to obtain a secure and verifiable random number.
 2. **Random Distribution**: Ensured that the event-exclusive ring is distributed to one of the mystery boxes fairly using the random number.
 3. **Crystals Distribution**: Ensured that the other mystery boxes contain a random amount of crystals (10 to 100) using the same random number.
 
-### Security and Efficiency Considerations:
+### Security and Efficiency Considerations
 
 - **Secure Randomness**: Using Chainlink VRF ensures that the random number is secure and cannot be manipulated.
 - **Check-Effects-Interaction Pattern**: The contract follows this pattern by updating the state before transferring tokens.
 - **Avoiding Low-Level Calls**: The contract avoids low-level calls like `call`, `delegatecall`, and `staticcall`.
 - **Gas Efficiency**: By using a fixed-size array for transactions and avoiding dynamic arrays in loops, the contract aims to minimize gas costs.
 
-### Further Enhancements:
+### Further Enhancements
 
 - **Timestamping**: Adding timestamps to reward distributions could provide a clearer timeline of actions.
 - **Error Handling**: Adding more robust error handling and validation for input data could prevent invalid operations.
@@ -364,19 +364,19 @@ contract TournamentRewards is ERC1155, Ownable, VRFConsumerBase {
 }
 ```
 
-### Key Changes:
+### Key Changes
 
 1. **Scope Management**: Ensured that the `ringIndex` variable is accessible within the loop where the crystals are being distributed.
 2. **Random Number Usage**: Used the random number correctly to determine the ring index and distribute the crystals.
 
-### Security and Efficiency Considerations:
+### Security and Efficiency Considerations
 
 - **Secure Randomness**: Using Chainlink VRF ensures that the random number is secure and cannot be manipulated.
 - **Check-Effects-Interaction Pattern**: The contract follows this pattern by updating the state before transferring tokens.
 - **Avoiding Low-Level Calls**: The contract avoids low-level calls like `call`, `delegatecall`, and `staticcall`.
 - **Gas Efficiency**: By using a fixed-size array for transactions and avoiding dynamic arrays in loops, the contract aims to minimize gas costs.
 
-### Further Enhancements:
+### Further Enhancements
 
 - **Timestamping**: Adding timestamps to reward distributions could provide a clearer timeline of actions.
 - **Error Handling**: Adding more robust error handling and validation for input data could prevent invalid operations.
@@ -476,18 +476,18 @@ contract TournamentRewards is ERC1155, Ownable, VRFConsumerBase {
 }
 ```
 
-### Key Changes:
+### Key Changes
 
 1. **Removed Explicit Constructor Parameter for `Ownable`**: Rely on the default behavior of `Ownable` to set the deployer as the initial owner.
 
-### Security and Efficiency Considerations:
+### Security and Efficiency Considerations
 
 - **Secure Randomness**: Using Chainlink VRF ensures that the random number is secure and cannot be manipulated.
 - **Check-Effects-Interaction Pattern**: The contract follows this pattern by updating the state before transferring tokens.
 - **Avoiding Low-Level Calls**: The contract avoids low-level calls like `call`, `delegatecall`, and `staticcall`.
 - **Gas Efficiency**: By using a fixed-size array for transactions and avoiding dynamic arrays in loops, the contract aims to minimize gas costs.
 
-### Further Enhancements:
+### Further Enhancements
 
 - **Timestamping**: Adding timestamps to reward distributions could provide a clearer timeline of actions.
 - **Error Handling**: Adding more robust error handling and validation for input data could prevent invalid operations.

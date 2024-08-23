@@ -1,9 +1,11 @@
-import React from 'react';
+import { describe, it, expect } from 'vitest';
 import { render, screen } from '@testing-library/react';
 import App from './app/App';
 
-test('renders learn react link', () => {
-  render(<App />);
-  const linkElement = screen.getByText(/learn react/i);
-  expect(linkElement).toBeInTheDocument();
+describe('App Component', () => {
+  it('renders textarea for user input', () => {
+    render(<App />);
+    const textareaElement = screen.getByPlaceholderText(/Describe desired smart contract/i);
+    expect(textareaElement).toBeInTheDocument();
+  });
 });

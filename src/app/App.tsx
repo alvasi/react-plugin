@@ -1,6 +1,5 @@
 import React, { useState, useCallback } from 'react';
 import { RemixClient } from './deepseek-client';
-// import { RemixClient } from './claude-client';
 import ReactMarkdown from 'react-markdown';
 import { Prism as SyntaxHighlighter } from 'react-syntax-highlighter';
 import { tomorrow } from 'react-syntax-highlighter/dist/esm/styles/prism';

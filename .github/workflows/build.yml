@@ -30,4 +30,6 @@ jobs:
 
     - name: Run Tests
       run: npm test
-      # Run test script defined in package.json
+      env:
+        REACT_APP_DEEPSEEK_API: ${{ secrets.DEEPSEEK_API }}
+      # Run test script defined in package.json, providing the API key as an environment variable

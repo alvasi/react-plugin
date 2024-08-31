@@ -24,10 +24,6 @@ jobs:
         run: npm install
         # Install npm dependencies
 
-      - name: Format code with Prettier
-        run: npx prettier --write .
-        # Automatically format the code base using Prettier rules
-
       - name: Run Tests
         run: npm test
         env:

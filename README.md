@@ -1,6 +1,6 @@
 # Smart Contract Generator -- Remix Plugin Introduction
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).\ Once the plugin is connected to Remix, it would also use bootstrap css styles that were already defined by Remix so that the format adheres to the changing themes.
+This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app). Once the plugin is connected to Remix, it would also use bootstrap css styles that were already defined by Remix so that the format adheres to the changing themes.
 
 ## Available Scripts
 
@@ -50,9 +50,10 @@ Uses Prettier code formatter to ensure that files adhere to a single standard.
 ## Important directories to note
 
 Chat dialogues generated when testing the different smart contract use cases are found in
-\generated_contracts/{llm model}.\
-Plugin logic is located in \src\app\App.tsx.\
-LLM integration logic is found in \src\app\deepseek-client.ts.\
+[\generated_contracts](https://github.com/alvasi/react-plugin/tree/main/generated_contracts/deepseek) .\
+Plugin logic is located in [\src\app\App.tsx](https://github.com/alvasi/react-plugin/blob/main/src/app/App.tsx) .\
+LLM integration logic is found in [\src\app\deepseek-client.ts](https://github.com/alvasi/react-plugin/blob/main/src/app/deepseek-client.ts) .\
+Tests for the plugin are in the [\src\App.test.tsx](https://github.com/alvasi/react-plugin/blob/main/src/App.test.tsx) file.
 
 ## Learn More
 

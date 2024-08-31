@@ -1,4 +1,4 @@
-import React, { useState, useCallback } from 'react';
+import React, { useState } from 'react';
 import { RemixClient } from './deepseek-client';
 import ReactMarkdown from 'react-markdown';
 import { Prism as SyntaxHighlighter } from 'react-syntax-highlighter';
@@ -6,30 +6,39 @@ import { tomorrow } from 'react-syntax-highlighter/dist/esm/styles/prism';
 import tutorialIcon from '../assets/tutorial_icon.svg';
 import './App.css';
 
+// Initialize the RemixClient
 const client = new RemixClient();
 client.onload(async () => {
-  client.init();
+  client.init(); // Initialize the client when it loads
 });
 
 export const App = () => {
+  // State to control visibility of the tutorial panel
   const [showTutorial, setShowTutorial] = useState(false);
+  // State to handle the message input from user
   const [message, setMessage] = useState('');
+  // State to store all conversations
   const [conversations, setConversations] = useState([]);
 
+  // Toggle the visibility of the tutorial section
   const toggleTutorial = () => setShowTutorial(!showTutorial);
 
+  // Handle generating template based on user's input
   const handleGenerateTemplate = async () => {
-    if (!message.trim()) return;
+    if (!message.trim()) return; // Prevent processing empty messages
 
+    // Create a new conversation entry
     const newConversation = {
       user: 'You',
       message: message.trim(),
       bot: '',
     };
 
+    // Add the new conversation to the state and reset message input
     setConversations([...conversations, newConversation]);
     setMessage('');
 
+    // Call client message function with current message and handle streamed responses
     await client.message(message, (streamedResponse) => {
       setConversations((convs) =>
         convs.map((conv, index) =>
@@ -39,51 +48,56 @@ export const App = () => {
         ),
       );
     });
-
-    // // non-streaming response
-    // const response = await client.message(message);
-    // setConversations(convs => convs.map((conv, index) =>
-    //   index === convs.length - 1 ? { ...conv, bot: response } : conv
-    // ));
   };
 
+  // Clears all conversations and resets the message input
   const handleClear = () => {
-    client.init();
-    setConversations([]);
-    setMessage('');
+    client.init(); // Reinitialize the client
+    setConversations([]); // Clear conversations
+    setMessage(''); // Clear the message input
   };
 
+  // Handle the enter key press to trigger template generation
   const onKeyDownHandler = (e) => {
-    // Check for 'Enter' without 'Shift' to trigger template generation
     if (e.key === 'Enter' && !e.shiftKey) {
       handleGenerateTemplate();
-      e.preventDefault();
+      e.preventDefault(); // Prevent default to stop form submission
     }
   };
 
+  // Function to handle text copying to clipboard
   const handleCopyText = (text) => {
+    // Create a temporary textarea element
     const textArea = document.createElement('textarea');
-    textArea.value = text;
-    document.body.appendChild(textArea);
-    textArea.style.position = 'fixed'; // Avoid scrolling to bottom
-    textArea.style.left = '-9999px'; // Move element out of screen horizontally
-    textArea.focus();
-    textArea.select();
+    textArea.value = text; // Set its value to the text to be copied
+    document.body.appendChild(textArea); // Append it to the body to make it part of the document
+    textArea.style.position = 'fixed'; // Set position to fixed to keep it out of view
+    textArea.style.left = '-9999px'; // Move it off-screen to avoid disrupting layout
+
+    textArea.focus(); // Focus on the textarea
+    textArea.select(); // Select all text inside the textarea
+
+    // Try to copy the text using the execCommand and handle potential failure
     try {
-      const successful = document.execCommand('copy');
-      const msg = successful ? 'Copied!' : 'Press Ctrl+C to copy';
-      console.log(msg);
-      alert(msg);
+      const successful = document.execCommand('copy'); // Attempt to copy text
+      const msg = successful ? 'Copied!' : 'Press Ctrl+C to copy'; // Set message based on success
+      console.log(msg); // Log the result for debugging
+      alert(msg); // Show the user the result via alert
     } catch (err) {
-      console.error('Failed to copy with manual fallback:', err);
-      alert('Press Ctrl+C to copy');
+      console.error('Failed to copy with manual fallback:', err); // Log any errors
+      alert('Press Ctrl+C to copy'); // Inform user how to copy manually on error
     }
+
+    // Clean up by removing the textarea from the document
     document.body.removeChild(textArea);
   };
 
+  // Component for handling code block rendering in Markdown
   const components = {
     code({ node, inline, className, children, ...props }) {
+      // Extract the language from className, defaulting to plain text if none found
       const match = /language-(\w+)/.exec(className || '');
+      // Check if there is a language class; if so, render with SyntaxHighlighter
       return !inline && match ? (
         <div style={{ position: 'relative' }}>
           <SyntaxHighlighter

@@ -1,5 +1,5 @@
 {
-  "name": "react-plugin",
+  "name": "remix-contract-generator",
   "version": "0.1.0",
   "private": true,
   "dependencies": {

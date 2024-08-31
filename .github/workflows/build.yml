@@ -7,7 +7,7 @@ on:
     branches: [main]
 
 jobs:
-  format_and_save:
+  format_code:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
@@ -27,25 +27,25 @@ jobs:
       - name: Format code
         run: npm run format
 
-      - name: Commit formatted code
-        run: |
-          git config --global user.email "action@github.com"
-          git config --global user.name "GitHub Action"
-          git add -A
-          git commit -m "Format code" || exit 0  # This command will exit with 0 even if there's nothing to commit
-        # Commit changes if there are any
+      # - name: Commit formatted code
+      #   run: |
+      #     git config --global user.email "action@github.com"
+      #     git config --global user.name "GitHub Action"
+      #     git add -A
+      #     git commit -m "Format code" || exit 0  # This command will exit with 0 even if there's nothing to commit
+      #   # Commit changes if there are any
 
-      - name: Push changes
-        run: |
-          git config --global user.email "action@github.com"
-          git config --global user.name "GitHub Action"
-          # Update the remote URL to use the PAT
-          git remote set-url origin https://${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.repository }}
-          git push
+      # - name: Push changes
+      #   run: |
+      #     git config --global user.email "action@github.com"
+      #     git config --global user.name "GitHub Action"
+      #     # Update the remote URL to use the PAT
+      #     git remote set-url origin https://${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.repository }}
+      #     git push
 
   run_tests:
     runs-on: ubuntu-latest
-    needs: format_and_save  # Ensures tests occur after formatting is completed and changes are saved
+    needs: format_code # Ensures tests occur after formatting is completed and changes are saved
     steps:
       - uses: actions/checkout@v2
         # Checkout code to the GitHub Actions runner

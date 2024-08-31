@@ -5,5 +5,5 @@ export default defineConfig({
     globals: true,
     environment: 'jsdom', // Use 'jsdom' for React component tests
     setupFiles: './src/setupTests.ts', // Setup file for extending expect or global setup
-  }
+  },
 });

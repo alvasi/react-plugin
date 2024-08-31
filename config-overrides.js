@@ -1,5 +1,5 @@
 const path = require('path');
-// const { override, addBabelPreset, addBabelPlugin } = require('customize-cra');
+const { override } = require('customize-cra');
 
 // // Function to override Jest configuration
 // const jestConfig = function (config) {

@@ -2,34 +2,34 @@ name: Run Tests
 
 on:
   push:
-    branches: [ main ]
+    branches: [main]
   pull_request:
-    branches: [ main ]
+    branches: [main]
 
 jobs:
   test:
     runs-on: ubuntu-latest
 
     steps:
-    - uses: actions/checkout@v2
-      # Checkout code to the GitHub Actions runner
+      - uses: actions/checkout@v2
+        # Checkout code to the GitHub Actions runner
 
-    - name: Set up Node.js
-      uses: actions/setup-node@v3
-      with:
-        node-version: '16'
-        # Set up the node version you are using
+      - name: Set up Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '16'
+          # Set up the node version you are using
 
-    - name: Install Dependencies
-      run: npm install
-      # Install npm dependencies
+      - name: Install Dependencies
+        run: npm install
+        # Install npm dependencies
 
-    - name: Format code with Prettier
-      run: npx prettier --write .
-      # Automatically format the code base using Prettier rules
+      - name: Format code with Prettier
+        run: npx prettier --write .
+        # Automatically format the code base using Prettier rules
 
-    - name: Run Tests
-      run: npm test
-      env:
-        REACT_APP_DEEPSEEK_API: ${{ secrets.DEEPSEEK_API }}
-      # Run test script defined in package.json, providing the API key as an environment variable
+      - name: Run Tests
+        run: npm test
+        env:
+          REACT_APP_DEEPSEEK_API: ${{ secrets.DEEPSEEK_API }}
+        # Run test script defined in package.json, providing the API key as an environment variable

@@ -10,7 +10,9 @@ describe('App Component', () => {
   });
 
   it('renders textarea for user input', () => {
-    const textareaElement = screen.getByPlaceholderText(/Describe desired smart contract/i);
+    const textareaElement = screen.getByPlaceholderText(
+      /Describe desired smart contract/i,
+    );
     expect(textareaElement).toBeInTheDocument();
   });
 
@@ -26,13 +28,17 @@ describe('App Component', () => {
   });
 
   it('allows user to enter text in textarea', async () => {
-    const textarea = screen.getByPlaceholderText(/Describe desired smart contract/i);
+    const textarea = screen.getByPlaceholderText(
+      /Describe desired smart contract/i,
+    );
     await userEvent.type(textarea, 'Hello, world!');
     expect(textarea).toHaveValue('Hello, world!');
   });
 
   it('clears the input and conversations on clear button click', async () => {
-    const input = screen.getByPlaceholderText(/Describe desired smart contract/i);
+    const input = screen.getByPlaceholderText(
+      /Describe desired smart contract/i,
+    );
     const clearButton = screen.getByRole('button', { name: /clear/i });
     const generateButton = screen.getByRole('button', { name: /enter/i });
 

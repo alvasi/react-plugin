@@ -33,7 +33,9 @@ export class RemixClient extends PluginClient {
     try {
       this.messages.push({ content: message, role: 'user' });
       if (!this.deepseekClient || !this.deepseekClient.beta) {
-        console.error('DeepseekClient or DeepseekClient.beta is not initialized');
+        console.error(
+          'DeepseekClient or DeepseekClient.beta is not initialized',
+        );
         return;
       }
       const stream = await this.deepseekClient.beta.chat.completions.stream({

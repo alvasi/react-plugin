@@ -45,7 +45,7 @@ Uses Prettier code formatter to ensure that files adhere to a single standard.
 3. Run either `npm start` or `npm run build` in the terminal of project directory.
 4. Enter as shown below:
 
-![localPlugin](/src/assets/connection.png "Connecting a local plugin on Remix")
+![localPlugin](/src/assets/connection.png 'Connecting a local plugin on Remix')
 
 ## Important directories to note
 

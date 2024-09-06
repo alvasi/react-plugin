@@ -27,7 +27,8 @@ export class RemixClient extends PluginClient {
       Avoid vulnerabilities such as reentrancy with check-effects-interaction and avoid low level calls. 
       Validate arguments with require or assert statements. Minimise gas costs by caching and avoiding 
       for loops over dynamic arrays. Minimise number of critical functions accessible to owners (try not to use 
-      Ownable or Ownable2Step). Use Roles.sol if role-based access control is required. Implement as much as possible but be concise. 
+      Ownable or Ownable2Step). Use Roles.sol if role-based access control is required. 
+      Use _grantRole instead of _setupRole. Implement as much as possible but be concise. 
       Ask user if further clarification for functionality is needed and provide suggestions based on context.`,
       role: 'system',
     });

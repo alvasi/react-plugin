@@ -275,7 +275,7 @@ Stream Response Time: 55142.0908203125 ms
     "prompt_cache_miss_tokens": 81
 }
 
-**user**: Rewrite the contract such that it minimises gas costs
+**user**: Rewrite the contract such that it minimises gas costs.
 
 **assistant**: To minimize gas costs in the `SupplyChainTracker` contract, we can make several optimizations:
 

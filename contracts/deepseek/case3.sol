@@ -1,114 +1,133 @@
 // SPDX-License-Identifier: MIT
-pragma solidity ^0.8.0;
+pragma solidity 0.8.27;
 
 import "@openzeppelin/contracts/token/ERC1155/ERC1155.sol";
-import "@openzeppelin/contracts/access/Ownable2Step.sol";
+import "@openzeppelin/contracts/access/AccessControl.sol";
+import "@openzeppelin/contracts/utils/Counters.sol";
+import "@openzeppelin/contracts/utils/math/SafeMath.sol";
 import "@chainlink/contracts/src/v0.8/VRFConsumerBase.sol";
+import "@openzeppelin/contracts/security/ReentrancyGuard.sol";
 
-contract TournamentRewards is Ownable2Step, VRFConsumerBase, ERC1155 {
-    ERC1155 public mysteryBox;
+contract TournamentRewards is AccessControl, VRFConsumerBase, ReentrancyGuard {
+    using Counters for Counters.Counter;
+    using SafeMath for uint256;
 
-    uint256 public constant GOLD_TOKEN_ID = 1;
-    uint256 public constant CHARACTER_SKIN_ID = 2;
-    uint256 public constant MYSTERY_BOX_ID = 3;
+    Counters.Counter private _tokenIdCounter;
 
-    uint256 public constant GOLD_WINNER = 10000;
-    uint256 public constant GOLD_RANK2_5 = 5000;
-    uint256 public constant GOLD_RANK6_10 = 2500;
-    uint256 public constant GOLD_PARTICIPATION = 100;
+    bytes32 private constant ADMIN_ROLE = keccak256("ADMIN_ROLE");
+    bytes32 private constant MINTER_ROLE = keccak256("MINTER_ROLE");
 
-    uint256 public constant MYSTERY_BOX_WINNER = 5;
-    uint256 public constant MYSTERY_BOX_RANK2_5 = 3;
-    uint256 public constant MYSTERY_BOX_RANK6_10 = 1;
+    ERC1155 public goldToken;
+    ERC1155 public mysteryBoxToken;
+    ERC1155 public characterSkinToken;
+
+    uint256 private constant EVENT_EXCLUSIVE_RING = 0;
+    uint256 private constant CRYSTAL = 1;
 
     bytes32 internal keyHash;
     uint256 internal fee;
     uint256 public randomResult;
 
     mapping(bytes32 => address) public requestIdToPlayer;
+    mapping(bytes32 => uint256) public requestIdToAmount;
+
+    event RandomnessRequested(bytes32 requestId);
+    event RandomnessFulfilled(uint256 randomness);
 
     constructor(
-        address initialOwner,
-        address _mysteryBox,
-        address _vrfCoordinator,
-        address _linkToken,
+        address goldTokenAddress,
+        address mysteryBoxTokenAddress,
+        address characterSkinTokenAddress,
+        address vrfCoordinator,
+        address linkToken,
         bytes32 _keyHash,
-        uint256 _fee,
-        string memory uri_
-    ) Ownable(initialOwner) VRFConsumerBase(_vrfCoordinator, _linkToken) ERC1155(uri_){
-        mysteryBox = ERC1155(_mysteryBox);
+        uint256 _fee
+    ) VRFConsumerBase(vrfCoordinator, linkToken) {
+        _grantRole(DEFAULT_ADMIN_ROLE, msg.sender);
+        _grantRole(ADMIN_ROLE, msg.sender);
+        _grantRole(MINTER_ROLE, msg.sender);
+
+        goldToken = ERC1155(goldTokenAddress);
+        mysteryBoxToken = ERC1155(mysteryBoxTokenAddress);
+        characterSkinToken = ERC1155(characterSkinTokenAddress);
+
         keyHash = _keyHash;
         fee = _fee;
     }
 
-    function distributeRewards(address[] calldata players, uint256[] calldata rankings) external onlyOwner {
+    function distributeRewards(address[] calldata players, uint256[] calldata rankings) external onlyRole(MINTER_ROLE) nonReentrant {
         require(players.length == rankings.length, "Mismatched array lengths");
 
-        for (uint256 i = 0; i < players.length; i++) {
+        for (uint256 i = 0; i < players.length; ++i) {
             address player = players[i];
             uint256 rank = rankings[i];
 
             if (rank == 1) {
-                _mintToken(player, GOLD_TOKEN_ID, GOLD_WINNER, "");
-                mysteryBox.safeTransferFrom(address(this), player, MYSTERY_BOX_ID, MYSTERY_BOX_WINNER, "");
-                _mintToken(player, CHARACTER_SKIN_ID, 1, "");
+                goldToken.safeTransferFrom(address(this), player, 0, 10000, "");
+                requestRandomness(player, 5);
+                characterSkinToken.safeTransferFrom(address(this), player, _tokenIdCounter.current(), 1, "");
+                _tokenIdCounter.increment();
             } else if (rank >= 2 && rank <= 5) {
-                _mintToken(player, GOLD_TOKEN_ID, GOLD_RANK2_5, "");
-                mysteryBox.safeTransferFrom(address(this), player, MYSTERY_BOX_ID, MYSTERY_BOX_RANK2_5, "");
+                goldToken.safeTransferFrom(address(this), player, 0, 5000, "");
+                requestRandomness(player, 3);
             } else if (rank >= 6 && rank <= 10) {
-                _mintToken(player, GOLD_TOKEN_ID, GOLD_RANK6_10, "");
-                mysteryBox.safeTransferFrom(address(this), player, MYSTERY_BOX_ID, MYSTERY_BOX_RANK6_10, "");
+                goldToken.safeTransferFrom(address(this), player, 0, 2500, "");
+                requestRandomness(player, 1);
             } else {
-                _mintToken(player, GOLD_TOKEN_ID, GOLD_PARTICIPATION, "");
+                goldToken.safeTransferFrom(address(this), player, 0, 100, "");
             }
         }
     }
 
-    function requestRandomness(address player) external onlyOwner returns (bytes32 requestId) {
+    function requestRandomness(address player, uint256 amount) internal returns (bytes32 requestId) {
         require(LINK.balanceOf(address(this)) >= fee, "Not enough LINK");
         requestId = requestRandomness(keyHash, fee);
         requestIdToPlayer[requestId] = player;
+        requestIdToAmount[requestId] = amount;
+        emit RandomnessRequested(requestId);
     }
 
-    function fulfillRandomness(bytes32 requestId, uint256 randomness) internal override {
-        randomResult = randomness;
+    function fulfillRandomness(bytes32 requestId, uint256 randomness) internal override nonReentrant {
         address player = requestIdToPlayer[requestId];
-        uint256 boxCount = MYSTERY_BOX_WINNER; // Assuming the winner gets the most boxes
-        uint256 eventExclusiveIndex = randomness % boxCount;
+        uint256 amount = requestIdToAmount[requestId];
+        randomResult = randomness;
+        distributeMysteryBoxes(player, amount);
+        emit RandomnessFulfilled(randomness);
+    }
 
-        for (uint256 i = 0; i < boxCount; i++) {
-            if (i == eventExclusiveIndex) {
-                // Mint event exclusive ring
-                mysteryBox.safeTransferFrom(address(this), player, MYSTERY_BOX_ID, 1, "");
+    function distributeMysteryBoxes(address to, uint256 amount) internal {
+        uint256 eventExclusiveRingIndex = randomResult % amount;
+        for (uint256 i = 0; i < amount; ++i) {
+            if (i == eventExclusiveRingIndex) {
+                mysteryBoxToken.safeTransferFrom(address(this), to, EVENT_EXCLUSIVE_RING, 1, "");
             } else {
-                // Mint crystals (10 to 100)
-                uint256 crystals = 10 + (randomness % 91); // Random number between 10 and 100
-                mysteryBox.safeTransferFrom(address(this), player, MYSTERY_BOX_ID, crystals, "");
+                uint256 crystals = (randomResult.add(i)) % 91 + 10;
+                mysteryBoxToken.safeTransferFrom(address(this), to, CRYSTAL, crystals, "");
             }
         }
     }
+}
 
-    function _mintToken(address to, uint256 id, uint256 amount, bytes memory data) internal {
-        _mint(to, id, amount, data);
+contract GoldToken is ERC1155 {
+    constructor() ERC1155("") {}
+
+    function mint(address to, uint256 id, uint256 amount) external {
+        _mint(to, id, amount, "");
     }
+}
 
-    function onERC1155Received(
-        address,
-        address,
-        uint256,
-        uint256,
-        bytes calldata
-    ) external pure returns (bytes4) {
-        return this.onERC1155Received.selector;
+contract MysteryBoxToken is ERC1155 {
+    constructor() ERC1155("") {}
+
+    function mint(address to, uint256 id, uint256 amount) external {
+        _mint(to, id, amount, "");
     }
+}
 
-    function onERC1155BatchReceived(
-        address,
-        address,
-        uint256[] calldata,
-        uint256[] calldata,
-        bytes calldata
-    ) external pure returns (bytes4) {
-        return this.onERC1155BatchReceived.selector;
+contract CharacterSkinToken is ERC1155 {
+    constructor() ERC1155("") {}
+
+    function mint(address to, uint256 id, uint256 amount) external {
+        _mint(to, id, amount, "");
     }
 }

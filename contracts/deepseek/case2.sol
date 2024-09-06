@@ -1,66 +1,84 @@
 // SPDX-License-Identifier: MIT
-pragma solidity ^0.8.0;
+pragma solidity 0.8.27;
 
-import "@openzeppelin/contracts/access/Ownable2Step.sol";
+import "@openzeppelin/contracts/access/AccessControl.sol";
 
-contract HealthRecordManager is Ownable2Step {
-    enum Role { None, Doctor, Patient, Hospital }
+contract HealthRecordManager is AccessControl {
+    bytes32 private constant DOCTOR_ROLE = keccak256("DOCTOR_ROLE");
+    bytes32 private constant HOSPITAL_ROLE = keccak256("HOSPITAL_ROLE");
+    bytes32 private constant PATIENT_ROLE = keccak256("PATIENT_ROLE");
 
-    struct PatientRecord {
-        bytes encryptedData;
+    struct HealthRecord {
+        string data;
         bool exists;
     }
 
-    mapping(address => Role) public roles;
-    mapping(address => PatientRecord) private patientRecords;
+    mapping(address => HealthRecord) private patientRecords;
 
-    event RecordAccessed(address indexed patient, address indexed entity);
-    event RecordUpdated(address indexed patient, address indexed entity, bytes newData);
-    event RoleAssigned(address indexed entity, Role role);
-    event RoleRevoked(address indexed entity);
+    event RecordUpdated(address indexed patient, address indexed updater, string newData);
+    event PatientRegistered(address indexed patient, address indexed registrar);
 
-    constructor(address initialOwner) Ownable(initialOwner) {}
-
-    modifier onlyRole(Role role) {
-        require(roles[msg.sender] == role, "Unauthorized access");
+    modifier onlyAuthorized() {
+        require(hasRole(DOCTOR_ROLE, msg.sender) || hasRole(HOSPITAL_ROLE, msg.sender), "Unauthorized access");
         _;
     }
 
-    function assignRole(address entity, Role role) external onlyOwner {
-        require(entity != address(0), "Invalid address");
-        roles[entity] = role;
-        emit RoleAssigned(entity, role);
+    modifier onlyPatientOrAuthorized(address patient) {
+        require(hasRole(PATIENT_ROLE, msg.sender) && msg.sender == patient || hasRole(DOCTOR_ROLE, msg.sender) || hasRole(HOSPITAL_ROLE, msg.sender), "Unauthorized access");
+        _;
     }
 
-    function revokeRole(address entity) external onlyOwner {
-        require(entity != address(0), "Invalid address");
-        roles[entity] = Role.None;
-        emit RoleRevoked(entity);
+    function grantDoctorRole(address doctor) external onlyRole(DEFAULT_ADMIN_ROLE) {
+        _grantRole(DOCTOR_ROLE, doctor);
     }
 
-    function registerPatient(address patient, bytes memory encryptedData) external onlyRole(Role.Doctor) {
-        require(roles[patient] == Role.None, "Patient already registered");
-        roles[patient] = Role.Patient;
-        patientRecords[patient] = PatientRecord(encryptedData, true);
-        emit RecordUpdated(patient, msg.sender, encryptedData);
+    function grantHospitalRole(address hospital) external onlyRole(DEFAULT_ADMIN_ROLE) {
+        _grantRole(HOSPITAL_ROLE, hospital);
     }
 
-    function updateRecord(address patient, bytes memory encryptedData) external onlyRole(Role.Doctor) {
-        require(patientRecords[patient].exists, "Record does not exist");
-        patientRecords[patient].encryptedData = encryptedData;
-        emit RecordUpdated(patient, msg.sender, encryptedData);
+    function grantPatientRole(address patient) external onlyRole(DEFAULT_ADMIN_ROLE) {
+        _grantRole(PATIENT_ROLE, patient);
     }
 
-    function getRecord(address patient) external returns (bytes memory) {
-        require(patientRecords[patient].exists, "Record does not exist");
-        require(roles[msg.sender] == Role.Doctor || (roles[msg.sender] == Role.Patient && msg.sender == patient), "Unauthorized access");
-        emit RecordAccessed(patient, msg.sender);
-        return patientRecords[patient].encryptedData;
+    function revokeDoctorRole(address doctor) external onlyRole(DEFAULT_ADMIN_ROLE) {
+        _revokeRole(DOCTOR_ROLE, doctor);
     }
 
-    function deleteRecord(address patient) external onlyRole(Role.Doctor) {
-        require(patientRecords[patient].exists, "Record does not exist");
+    function revokeHospitalRole(address hospital) external onlyRole(DEFAULT_ADMIN_ROLE) {
+        _revokeRole(HOSPITAL_ROLE, hospital);
+    }
+
+    function revokePatientRole(address patient) external onlyRole(DEFAULT_ADMIN_ROLE) {
+        _revokeRole(PATIENT_ROLE, patient);
+    }
+
+    function registerPatient(address patient, string memory data) external onlyAuthorized {
+        HealthRecord storage record = patientRecords[patient];
+        require(!record.exists, "Patient already registered");
+        record.data = data;
+        record.exists = true;
+        _grantRole(PATIENT_ROLE, patient);
+        emit PatientRegistered(patient, msg.sender);
+    }
+
+    function addOrUpdateRecord(address patient, string memory newData) external onlyAuthorized {
+        HealthRecord storage record = patientRecords[patient];
+        require(record.exists, "Patient not registered");
+        if (keccak256(bytes(record.data)) != keccak256(bytes(newData))) {
+            record.data = newData;
+            emit RecordUpdated(patient, msg.sender, newData);
+        }
+    }
+
+    function getRecord(address patient) external view onlyPatientOrAuthorized(patient) returns (string memory) {
+        HealthRecord storage record = patientRecords[patient];
+        require(record.exists, "Record does not exist");
+        return record.data;
+    }
+
+    function deleteRecord(address patient) external onlyRole(DEFAULT_ADMIN_ROLE) {
+        HealthRecord storage record = patientRecords[patient];
+        require(record.exists, "Record does not exist");
         delete patientRecords[patient];
-        emit RecordUpdated(patient, msg.sender, "");
     }
 }

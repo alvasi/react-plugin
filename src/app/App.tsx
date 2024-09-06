@@ -6,10 +6,10 @@ import { tomorrow } from 'react-syntax-highlighter/dist/esm/styles/prism';
 import tutorialIcon from '../assets/tutorial_icon.svg';
 import './App.css';
 
-// Initialize the RemixClient
+// Initialise the RemixClient
 const client = new RemixClient();
 client.onload(async () => {
-  client.init(); // Initialize the client when it loads
+  client.init(); // Initialise the client when it loads
 });
 
 export const App = () => {
@@ -52,7 +52,7 @@ export const App = () => {
 
   // Clears all conversations and resets the message input
   const handleClear = () => {
-    client.init(); // Reinitialize the client
+    client.init(); // Reinitialise the client
     setConversations([]); // Clear conversations
     setMessage(''); // Clear the message input
   };
@@ -142,6 +142,17 @@ export const App = () => {
             <li>Specify the context if necessary.</li>
             <li>Use simple language.</li>
           </ul>
+          <p>
+            For more detailed examples, refer to{' '}
+            <a
+              href="https://platform.openai.com/docs/guides/prompt-engineering"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              Prompt Engineering Guide
+            </a>
+            .{' '}
+          </p>
         </div>
       )}
       <div className="conversations mb-2">

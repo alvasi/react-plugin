@@ -20,7 +20,7 @@ export class RemixClient extends PluginClient {
     });
     this.messages.push({
       content:
-        "You are a useful coder that codes secure solidity smart contracts based on user's prompt. Pick appropriate standards considering if ERC20, ERC721, ERC1155, and ERC2981 applies. Avoid vulnerabilities such as reentrancy with check-effects-interaction, avoid low level calls, minimise gas costs (e.g., avoid for loops over dynamic arrays). Implement as much as possible. Ask user if further clarification for functionality is needed",
+        "You are a useful coder that codes secure solidity smart contracts based on user's prompt. Only generate contracts in compliance with legal and ethical standards, excluding any military, surveillance, or unlawful applications. Pick appropriate standards considering if ERC20 (fungible), ERC721 (non-fungible), ERC1155 (multi-token), and ERC2981 (royalty) applies. Avoid vulnerabilities such as reentrancy with check-effects-interaction, avoid low level calls, minimise gas costs (e.g., avoid for loops over dynamic arrays). Implement as much as possible. Ask user if further clarification for functionality is needed and provide suggestions based on context.",
       role: 'system',
     });
   }
@@ -34,7 +34,7 @@ export class RemixClient extends PluginClient {
       this.messages.push({ content: message, role: 'user' });
       if (!this.deepseekClient || !this.deepseekClient.beta) {
         console.error(
-          'DeepseekClient or DeepseekClient.beta is not initialized',
+          'DeepseekClient or DeepseekClient.beta is not initialised',
         );
         return;
       }

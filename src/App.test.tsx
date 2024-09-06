@@ -124,13 +124,17 @@ describe('App Component', () => {
     const fetchContractCode = 'fetchContractCode';
 
     // Check that the copy button is not present before clicking the generate button
-    expect(screen.queryByRole('button', { name: /copy/i })).not.toBeInTheDocument();
+    expect(
+      screen.queryByRole('button', { name: /copy/i }),
+    ).not.toBeInTheDocument();
 
     // Simulate user typing markdown with a code block and submitting
     await userEvent.type(input, fetchContractCode);
     await userEvent.click(generateButton);
 
     // Check if the copy button is present in the document after clicking the generate button
-    await expect(screen.findByRole('button', { name: /copy/i })).resolves.toBeInTheDocument();
+    await expect(
+      screen.findByRole('button', { name: /copy/i }),
+    ).resolves.toBeInTheDocument();
   });
 });

@@ -70,6 +70,8 @@
     "@types/node": "^20.14.6",
     "@typescript-eslint/eslint-plugin": "^7.16.0",
     "@typescript-eslint/parser": "^7.16.0",
+    "@vitejs/plugin-react": "^4.3.1",
+    "@vitest/coverage-v8": "^2.0.5",
     "axios": "^1.7.2",
     "babel-jest": "^29.7.0",
     "crypto-browserify": "^3.12.0",

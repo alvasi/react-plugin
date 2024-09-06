@@ -1,6 +1,6 @@
 **system**: You are a useful coder that codes secure solidity smart contracts based on user's prompt. Only generate contracts in compliance with legal and ethical standards, excluding any military, surveillance, or unlawful applications. Implement appropriate standards such as ERC20 (fungible), ERC721 (non-fungible), ERC1155 (mix of fungible & non-fungible), and ERC2981 (NFT royalty) if applicable. Use strictly Solidity Pragma version (0.8.27). Ensure minting functions includes proper access control mechanisms. Avoid vulnerabilities such as reentrancy with check-effects-interaction and avoid low level calls. Validate arguments with require or assert statements. Minimise gas costs by caching and avoiding for loops over dynamic arrays. Minimise number of critical functions accessible to owners (try not to use Ownable or Ownable2Step). Use Roles.sol if role-based access control is required. Implement as much as possible but be concise. Ask user if further clarification for functionality is needed and provide suggestions based on context.
 
-**user**: I want to automate music streaming royalty calculations and distributions. The contract should handle payments based on streaming duration. 
+**user**: I want to automate music streaming royalty calculations and distributions. The contract should handle payments based on streaming duration.
 
 **assistant**: To automate music streaming royalty calculations and distributions, we can create a smart contract that handles the following:
 
@@ -11,6 +11,7 @@
 Given the complexity of handling real-time streaming data on-chain, we'll assume that streaming data (duration and track ID) is submitted off-chain and then processed by the contract.
 
 ### Suggestions:
+
 1. **Off-Chain Data Submission**: Use a trusted oracle or a decentralized oracle network (DON) to submit streaming data securely.
 2. **Payment Token**: Use an ERC20 token for payments.
 3. **Royalty Calculation**: Implement a simple royalty calculation based on streaming duration.
@@ -90,6 +91,7 @@ contract MusicStreamingRoyalties is ERC721, AccessControl, ReentrancyGuard {
 6. **setRoyaltyRate**: Allows the admin to set the royalty rate per second.
 
 ### Questions:
+
 1. **Payment Token**: Do you have a specific ERC20 token in mind for payments?
 2. **Royalty Rate**: How do you want to set the initial royalty rate?
 3. **Stream Data Submission**: How will the streaming data be submitted to the contract? (e.g., via an oracle)
@@ -98,11 +100,11 @@ Would you like to make any adjustments or provide more details?
 Stream Response Time: 64577.681884765625 ms
 
 {
-    "prompt_tokens": 276,
-    "completion_tokens": 1140,
-    "total_tokens": 1416,
-    "prompt_cache_hit_tokens": 192,
-    "prompt_cache_miss_tokens": 84
+"prompt_tokens": 276,
+"completion_tokens": 1140,
+"total_tokens": 1416,
+"prompt_cache_hit_tokens": 192,
+"prompt_cache_miss_tokens": 84
 }
 
 **user**: To incorporate the distribution of royalties as specified (60% to the artist, 30% to the recording label, and 10% as a platform fee) and use the ERC2981 standard for NFT royalties, we can extend the previous contract.
@@ -210,6 +212,7 @@ contract MusicStreamingRoyalties is ERC721, AccessControl, ReentrancyGuard, IERC
 8. **ERC2981 Implementation**: Implements the `royaltyInfo` function to provide royalty information for secondary market sales.
 
 ### Questions:
+
 1. **Payment Token**: Do you have a specific ERC20 token in mind for payments?
 2. **Royalty Rate**: How do you want to set the initial royalty rate?
 3. **Stream Data Submission**: How will the streaming data be submitted to the contract? (e.g., via an oracle)
@@ -218,9 +221,9 @@ contract MusicStreamingRoyalties is ERC721, AccessControl, ReentrancyGuard, IERC
 Would you like to make any adjustments or provide more details?
 Stream Response Time: 87350.38696289062 ms
 {
-    "prompt_tokens": 1465,
-    "completion_tokens": 1436,
-    "total_tokens": 2901,
-    "prompt_cache_hit_tokens": 1408,
-    "prompt_cache_miss_tokens": 57
+"prompt_tokens": 1465,
+"completion_tokens": 1436,
+"total_tokens": 2901,
+"prompt_cache_hit_tokens": 1408,
+"prompt_cache_miss_tokens": 57
 }

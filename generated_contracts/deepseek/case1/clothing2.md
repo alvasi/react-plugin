@@ -7,14 +7,17 @@
 Here's a basic outline of the contract:
 
 1. **Data Structures**:
+
    - **Material**: A struct to store details about the material (type, quantity, cost, farm name).
    - **Transaction**: A struct to store details about each transaction in the supply chain (material details, timestamp, sender, receiver).
 
 2. **State Variables**:
+
    - An array to store all transactions.
    - A mapping to track the current owner of each material.
 
 3. **Functions**:
+
    - **addMaterial**: Allows a farm to add a new material to the supply chain.
    - **transferMaterial**: Allows the transfer of material from one party to another.
    - **getTransactionHistory**: Allows anyone to view the transaction history of a specific material.
@@ -126,6 +129,7 @@ contract OrganicCashmereWoolSupplyChain is Ownable2Step {
 5. **getTransactionHistory Function**: Allows anyone to view the transaction history of a specific material. It filters the `transactions` array to find all transactions related to the specified material.
 
 ### Suggestions:
+
 - **Access Control**: The `onlyOwner` modifier is used to restrict access to the `addMaterial` function. You might want to extend this to other functions if needed.
 - **Gas Optimization**: The `getTransactionHistory` function currently iterates over the entire `transactions` array, which could be gas-intensive for large datasets. Consider implementing pagination or indexing if this becomes an issue.
 - **Error Handling**: The contract uses `require` statements to validate user inputs. Consider adding more detailed error messages for better user feedback.
@@ -134,18 +138,18 @@ Would you like any further clarification or additional functionality?
 
 Stream Response Time: 80739.0400390625 ms
 {
-    "prompt_tokens": 304,
-    "completion_tokens": 1316,
-    "total_tokens": 1620,
-    "prompt_cache_hit_tokens": 64,
-    "prompt_cache_miss_tokens": 240
+"prompt_tokens": 304,
+"completion_tokens": 1316,
+"total_tokens": 1620,
+"prompt_cache_hit_tokens": 64,
+"prompt_cache_miss_tokens": 240
 }
 
 **user**: I want the transaction struct to include quantity and cost instead of the material struct. The material struct should have a field for farm certification status and country farm is located in. Delivery duration and mode of delivery should also be included in each transaction. Fix the following errors: TypeError: Built-in binary operator == cannot be applied to types string storage ref and string storage ref.
-  --> contracts/test2/case1.sol:74:17:
-   |
-74 |             if (transactions[i].material.materialType == transactions[_materialId].material.materialType) {
-   |                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+--> contracts/test2/case1.sol:74:17:
+|
+74 | if (transactions[i].material.materialType == transactions[_materialId].material.materialType) {
+| ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 **assistant**: Certainly! Let's update the contract to include the requested changes and fix the type error. We'll modify the `Transaction` struct to include `quantity`, `cost`, `deliveryDuration`, and `modeOfDelivery`. We'll also add `farmCertificationStatus` and `country` fields to the `Material` struct.
 
@@ -269,17 +273,18 @@ contract OrganicCashmereWoolSupplyChain is Ownable2Step {
 5. **getTransactionHistory Function**: Retrieves the transaction history for a specific material by comparing `materialId` instead of `materialType`.
 
 ### Fixes:
+
 - **TypeError**: The error was due to comparing two `string` storage references directly. Instead, we now compare `materialId` which is a `uint256`.
 
 Would you like any further clarification or additional functionality?
 
 Stream Response Time: 72878.4169921875 ms
 {
-    "prompt_tokens": 1757,
-    "completion_tokens": 1104,
-    "total_tokens": 2861,
-    "prompt_cache_hit_tokens": 1600,
-    "prompt_cache_miss_tokens": 157
+"prompt_tokens": 1757,
+"completion_tokens": 1104,
+"total_tokens": 2861,
+"prompt_cache_hit_tokens": 1600,
+"prompt_cache_miss_tokens": 157
 }
 
 **user**: remove cost and quantity from the material struct
@@ -403,11 +408,9 @@ Would you like any further clarification or additional functionality?
 
 Stream Response Time: 63622.929931640625 ms
 {
-    "prompt_tokens": 2872,
-    "completion_tokens": 993,
-    "total_tokens": 3865,
-    "prompt_cache_hit_tokens": 2816,
-    "prompt_cache_miss_tokens": 56
+"prompt_tokens": 2872,
+"completion_tokens": 993,
+"total_tokens": 3865,
+"prompt_cache_hit_tokens": 2816,
+"prompt_cache_miss_tokens": 56
 }
-
-

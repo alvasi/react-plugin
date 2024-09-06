@@ -76,13 +76,14 @@ contract OrganicScarfSupplyChain is ERC721, ERC721URIStorage, ERC721Royalty, Own
 
 4. **setRoyalty Function**: This function allows the owner to set the royalty for a specific token. The royalty is paid to the specified receiver whenever the token is sold.
 
-5. **_burn Function**: This internal function overrides the default `_burn` function to also delete the scarf details when a token is burned.
+5. **\_burn Function**: This internal function overrides the default `_burn` function to also delete the scarf details when a token is burned.
 
 6. **tokenURI Function**: This function returns the URI for the token metadata.
 
 7. **supportsInterface Function**: This function checks if the contract supports a specific interface, which is necessary for ERC721Royalty.
 
 ### Suggestions:
+
 - **Metadata**: The `uri` parameter in the `mintScarf` function should point to a JSON file containing additional metadata about the scarf, such as images, descriptions, and other relevant information.
 - **Royalties**: Consider setting a default royalty for all tokens in the constructor or a separate function to avoid setting royalties individually for each token.
 - **Access Control**: The `onlyOwner` modifier is used to restrict access to certain functions, ensuring that only the owner can mint new scarves or set royalties.
@@ -90,11 +91,11 @@ contract OrganicScarfSupplyChain is ERC721, ERC721URIStorage, ERC721Royalty, Own
 Would you like to add any specific features or further clarify the functionality?
 Stream Response Time: 57835.8798828125 ms
 {
-    "prompt_tokens": 267,
-    "completion_tokens": 1166,
-    "total_tokens": 1433,
-    "prompt_cache_hit_tokens": 64,
-    "prompt_cache_miss_tokens": 203
+"prompt_tokens": 267,
+"completion_tokens": 1166,
+"total_tokens": 1433,
+"prompt_cache_hit_tokens": 64,
+"prompt_cache_miss_tokens": 203
 }
 
 **user**: Instead of for each scarf, I want to track the transaction of materials. For each transaction, it should record 1. Material Type (cashmere or wool) 2. Quantity (in kilograms) 3. Cost (in GBP) 4. Origin of the material (country and specific farm) 5. Farm certification status (certified or not certified) 6. Delivery duration (in days) 7. Mode of delivery (air, sea, or land)
@@ -189,6 +190,7 @@ contract MaterialSupplyChain is Ownable2Step {
 5. **Event**: The `TransactionAdded` event is emitted whenever a new transaction is added, providing the transaction ID, material type, quantity, and cost.
 
 ### Suggestions:
+
 - **Validation**: The `addTransaction` function includes validation to ensure that the material type, quantity, cost, and delivery duration are valid. Additionally, it checks that the delivery mode is one of the allowed values ("air", "sea", or "land").
 - **Access Control**: The `onlyOwner` modifier is used to restrict access to the `addTransaction` function, ensuring that only the owner can add new transactions.
 - **Gas Optimization**: The contract avoids dynamic arrays and uses a counter to generate unique transaction IDs, which helps in minimizing gas costs.
@@ -197,9 +199,9 @@ Would you like to add any specific features or further clarify the functionality
 Stream Response Time: 48039.338134765625 ms
 
 {
-    "prompt_tokens": 1534,
-    "completion_tokens": 1009,
-    "total_tokens": 2543,
-    "prompt_cache_hit_tokens": 1408,
-    "prompt_cache_miss_tokens": 126
+"prompt_tokens": 1534,
+"completion_tokens": 1009,
+"total_tokens": 2543,
+"prompt_cache_hit_tokens": 1408,
+"prompt_cache_miss_tokens": 126
 }

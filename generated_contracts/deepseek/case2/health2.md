@@ -7,15 +7,18 @@
 Here's a basic outline of the contract:
 
 1. **Data Structures**:
+
    - **Patient**: A struct to store patient details and health records.
    - **AccessRequest**: A struct to store access requests from doctors and hospitals.
 
 2. **State Variables**:
+
    - A mapping to store patient data.
    - A mapping to store access requests.
    - A mapping to store authorized entities.
 
 3. **Functions**:
+
    - **addPatient**: Allows authorized entities to add a new patient.
    - **updatePatientRecord**: Allows authorized entities to update patient records.
    - **requestAccess**: Allows doctors and hospitals to request access to patient records.
@@ -150,6 +153,7 @@ contract PatientEHR is Ownable2Step {
 8. **terminateSession Function**: Emits an event to indicate that a session has been terminated due to unauthorized access.
 
 ### Access Control:
+
 - **onlyAuthorized Modifier**: Ensures that only authorized entities can call certain functions.
 - **Ownable2Step**: Manages ownership and access control for granting and revoking access.
 
@@ -157,9 +161,9 @@ Would you like any further clarification or additional functionality?
 
 Stream Response Time: 82139.3388671875 ms
 {
-    "prompt_tokens": 2872,
-    "completion_tokens": 993,
-    "total_tokens": 3865,
-    "prompt_cache_hit_tokens": 2816,
-    "prompt_cache_miss_tokens": 56
+"prompt_tokens": 2872,
+"completion_tokens": 993,
+"total_tokens": 3865,
+"prompt_cache_hit_tokens": 2816,
+"prompt_cache_miss_tokens": 56
 }

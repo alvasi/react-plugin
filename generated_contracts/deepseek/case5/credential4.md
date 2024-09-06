@@ -70,6 +70,7 @@ contract CourseMicroCredential is ERC721, ERC721Enumerable, AccessControl {
 1. **Non-Transferable Tokens**: The tokens are non-transferable, meaning they cannot be transferred or sold. This is enforced by overriding the `_beforeTokenTransfer` function.
 
 2. **Role-Based Access Control**: The contract uses `AccessControl` from OpenZeppelin to manage roles. There are two main roles:
+
    - `ISSUER_ROLE`: Allows the issuance of new credentials.
    - `REVOKE_ROLE`: Allows the revocation of existing credentials.
 
@@ -87,9 +88,9 @@ contract CourseMicroCredential is ERC721, ERC721Enumerable, AccessControl {
 Would you like to add any additional features or modify the existing functionality?
 Stream Response Time: 58996.86083984375 ms
 {
-    "prompt_tokens": 298,
-    "completion_tokens": 1056,
-    "total_tokens": 1354,
-    "prompt_cache_hit_tokens": 256,
-    "prompt_cache_miss_tokens": 42
+"prompt_tokens": 298,
+"completion_tokens": 1056,
+"total_tokens": 1354,
+"prompt_cache_hit_tokens": 256,
+"prompt_cache_miss_tokens": 42
 }

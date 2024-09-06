@@ -9,12 +9,14 @@
 3. **Payment Handling**: The contract will accept payments in a specific token (e.g., ERC20) and distribute them proportionally based on streaming data.
 
 ### Suggestions:
+
 - **ERC721 for Tracks**: Each track will be an NFT (ERC721) to represent ownership.
 - **ERC20 for Payments**: Payments will be made in an ERC20 token.
 - **ERC2981 for Royalties**: Implement ERC2981 to handle royalty payments when the NFT is sold.
 - **Data Input**: Streaming data (duration, track ID) will be inputted by a trusted oracle or a trusted party.
 
 ### Contract Outline:
+
 1. **Track Ownership**: Manage ownership of tracks using ERC721.
 2. **Royalty Calculation**: Calculate royalties based on streaming duration.
 3. **Payment Distribution**: Distribute payments to track owners based on streaming data.
@@ -96,6 +98,7 @@ contract MusicStreamingRoyalties is ERC721, ERC721Enumerable, ERC721URIStorage, 
 ```
 
 ### Explanation:
+
 - **ERC721**: Represents each music track as an NFT.
 - **ERC2981**: Handles royalty payments when the NFT is sold.
 - **Payment Token**: Payments are made in an ERC20 token.
@@ -103,6 +106,7 @@ contract MusicStreamingRoyalties is ERC721, ERC721Enumerable, ERC721URIStorage, 
 - **Royalty Distribution**: Distributes royalties based on streaming duration.
 
 ### Next Steps:
+
 - **Oracle Integration**: Consider how streaming data will be inputted into the contract. This could be done via an oracle or a trusted party.
 - **Gas Optimization**: Review the contract for potential gas optimizations, especially if dealing with a large number of tracks.
 - **Security Audits**: Ensure the contract is audited for security vulnerabilities before deployment.
@@ -110,11 +114,11 @@ contract MusicStreamingRoyalties is ERC721, ERC721Enumerable, ERC721URIStorage, 
 Would you like further clarification on any part of the contract or additional functionality?
 Stream Response Time: 69976.46899414062 ms
 {
-    "prompt_tokens": 243,
-    "completion_tokens": 1490,
-    "total_tokens": 1733,
-    "prompt_cache_hit_tokens": 192,
-    "prompt_cache_miss_tokens": 51
+"prompt_tokens": 243,
+"completion_tokens": 1490,
+"total_tokens": 1733,
+"prompt_cache_hit_tokens": 192,
+"prompt_cache_miss_tokens": 51
 }
 
 **user**: It should distribute 60% of the collected royalties to the artist, 30% to the recording label, and retain 10% as a platform fee.
@@ -215,11 +219,13 @@ contract MusicStreamingRoyalties is ERC721, ERC721Enumerable, ERC721URIStorage, 
 ```
 
 ### Explanation:
+
 - **RoyaltyDistribution Struct**: Stores the addresses of the artist, label, and platform for each track.
 - **safeMint Function**: Now includes parameters for the artist, label, and platform addresses.
 - **distributeRoyalties Function**: Calculates and distributes royalties according to the specified percentages (60% to the artist, 30% to the label, and 10% to the platform).
 
 ### Next Steps:
+
 - **Oracle Integration**: Consider how streaming data will be inputted into the contract. This could be done via an oracle or a trusted party.
 - **Gas Optimization**: Review the contract for potential gas optimizations, especially if dealing with a large number of tracks.
 - **Security Audits**: Ensure the contract is audited for security vulnerabilities before deployment.
@@ -227,10 +233,9 @@ contract MusicStreamingRoyalties is ERC721, ERC721Enumerable, ERC721URIStorage, 
 Would you like further clarification on any part of the contract or additional functionality?
 Stream Response Time: 68869.9208984375 ms
 {
-    "prompt_tokens": 1772,
-    "completion_tokens": 1484,
-    "total_tokens": 3256,
-    "prompt_cache_hit_tokens": 1728,
-    "prompt_cache_miss_tokens": 44
+"prompt_tokens": 1772,
+"completion_tokens": 1484,
+"total_tokens": 3256,
+"prompt_cache_hit_tokens": 1728,
+"prompt_cache_miss_tokens": 44
 }
-

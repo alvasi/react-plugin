@@ -136,7 +136,18 @@ export const App = () => {
       </div>
       {showTutorial && (
         <div className="tutorial-content">
-          <p>How to word prompts:</p>
+          <p>
+            <small>
+              <strong>Disclaimer:</strong> The AI Assistant is powered by
+              Deepseek API, which utilises AI/ML and therefore may produce
+              inaccurate information. You should always review any information
+              produced by the assistant to ensure that any results are accurate
+              and suit your purposes.
+            </small>
+          </p>
+          <p>
+            <strong>How to word prompts:</strong>
+          </p>
           <ul>
             <li>Be clear and concise.</li>
             <li>Specify the context if necessary.</li>

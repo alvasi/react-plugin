@@ -92,6 +92,7 @@ contract SupplyChainTracker {
 8. **getTransactionCount and getTransaction Functions**: These functions allow anyone to query the number of transactions and retrieve details of a specific transaction by its ID.
 
 ### Suggestions:
+
 - **Access Control**: The contract uses a simple mapping for access control. If more complex role-based access control is needed, consider using OpenZeppelin's `Roles.sol` or `AccessControl.sol`.
 - **Event Logging**: The `TransactionRecorded` event is emitted whenever a new transaction is recorded, which can be useful for off-chain monitoring and analytics.
 - **Gas Optimization**: The contract avoids dynamic arrays in loops and uses simple data structures to minimize gas costs.
@@ -101,11 +102,11 @@ Would you like any further clarification or additional functionality?
 Stream Response Time: 47961.18603515625 ms
 
 {
-    "prompt_tokens": 308,
-    "completion_tokens": 1029,
-    "total_tokens": 1337,
-    "prompt_cache_hit_tokens": 256,
-    "prompt_cache_miss_tokens": 52
+"prompt_tokens": 308,
+"completion_tokens": 1029,
+"total_tokens": 1337,
+"prompt_cache_hit_tokens": 256,
+"prompt_cache_miss_tokens": 52
 }
 
 **user**: The transaction should also record country origin of the farm, farm certification status, delivery duration and mode of delivery
@@ -244,22 +245,26 @@ contract SupplyChainTracker {
 ### Explanation of Changes:
 
 1. **Extended `MaterialTransaction` Struct**:
+
    - Added `countryOrigin` to record the country of origin of the farm.
    - Added `certificationStatus` to record the certification status of the farm.
    - Added `deliveryDuration` to record the duration of delivery.
    - Added `modeOfDelivery` to record the mode of delivery.
 
 2. **Updated `recordTransaction` Function**:
+
    - Added parameters for `countryOrigin`, `certificationStatus`, `deliveryDuration`, and `modeOfDelivery`.
    - Added a `require` statement to ensure `deliveryDuration` is greater than zero.
 
 3. **Updated `TransactionRecorded` Event**:
+
    - Added the new fields to the event to log all the transaction details.
 
 4. **Updated `getTransaction` Function**:
    - Added the new fields to the return values to retrieve all the transaction details.
 
 ### Suggestions:
+
 - **Validation**: You might want to add more validation for the `certificationStatus` and `modeOfDelivery` fields to ensure they are within expected values.
 - **Gas Optimization**: The contract already avoids dynamic arrays in loops and uses simple data structures to minimize gas costs.
 
@@ -268,11 +273,11 @@ Would you like any further clarification or additional functionality?
 Stream Response Time: 55142.0908203125 ms
 
 {
-    "prompt_tokens": 1361,
-    "completion_tokens": 1184,
-    "total_tokens": 2545,
-    "prompt_cache_hit_tokens": 1280,
-    "prompt_cache_miss_tokens": 81
+"prompt_tokens": 1361,
+"completion_tokens": 1184,
+"total_tokens": 2545,
+"prompt_cache_hit_tokens": 1280,
+"prompt_cache_miss_tokens": 81
 }
 
 **user**: Rewrite the contract such that it minimises gas costs.
@@ -414,18 +419,22 @@ contract SupplyChainTracker {
 ### Explanation of Optimizations:
 
 1. **Use `bytes32` for Fixed-Length Strings**:
+
    - Using `bytes32` instead of `string` for fixed-length strings like `materialType`, `farmName`, `countryOrigin`, `certificationStatus`, and `modeOfDelivery` saves gas.
 
 2. **Mapping for Transactions**:
+
    - Replaced the dynamic array `transactions` with a mapping `transactions` and a `transactionCount` variable to keep track of the number of transactions.
 
 3. **Event Logging with Indexed Parameters**:
+
    - Indexed parameters in events make them more gas-efficient for filtering and searching.
 
 4. **Avoid Redundant Checks**:
    - Ensured that checks are only performed when necessary, such as checking `quantity`, `cost`, and `deliveryDuration` before recording a transaction.
 
 ### Suggestions:
+
 - **Validation**: You might want to add more validation for the `certificationStatus` and `modeOfDelivery` fields to ensure they are within expected values.
 - **Gas Optimization**: The contract already avoids dynamic arrays in loops and uses simple data structures to minimize gas costs.
 
@@ -433,10 +442,9 @@ Would you like any further clarification or additional functionality?
 Stream Response Time: 59006.762939453125 ms
 
 {
-    "prompt_tokens": 2558,
-    "completion_tokens": 1279,
-    "total_tokens": 3837,
-    "prompt_cache_hit_tokens": 2496,
-    "prompt_cache_miss_tokens": 62
+"prompt_tokens": 2558,
+"completion_tokens": 1279,
+"total_tokens": 3837,
+"prompt_cache_hit_tokens": 2496,
+"prompt_cache_miss_tokens": 62
 }
-

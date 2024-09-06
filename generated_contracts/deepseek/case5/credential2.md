@@ -7,15 +7,18 @@
 Here's a basic outline of the contract:
 
 1. **Data Structures**:
+
    - **Student**: A struct to store student details and their credentials.
    - **Course**: A struct to store course details and pass marks.
 
 2. **State Variables**:
+
    - A mapping to store student data.
    - A mapping to store course data.
    - A mapping to store the balance of each student's tokens.
 
 3. **Functions**:
+
    - **registerStudent**: Allows students to register.
    - **createCourse**: Allows the contract owner to create a new course.
    - **issueCredential**: Allows the contract owner to issue a credential to a student who has achieved the pass mark.
@@ -159,13 +162,15 @@ contract CourseMicroCredentials is ERC721, Ownable2Step {
 5. **issueCredential Function**: Allows the contract owner to issue a credential to a student who has achieved the pass mark.
 6. **verifyCredential Function**: Allows anyone to verify a student's credential.
 7. **revokeCredential Function**: Allows the contract owner to revoke a credential.
-8. **_beforeTokenTransfer Function**: Overrides the ERC721 transfer functions to make tokens non-transferable.
+8. **\_beforeTokenTransfer Function**: Overrides the ERC721 transfer functions to make tokens non-transferable.
 
 ### Access Control:
+
 - **onlyOwner Modifier**: Ensures that only the contract owner can call certain functions.
 - **Ownable2Step**: Manages ownership and access control for creating courses, issuing credentials, and revoking credentials.
 
 ### Notes:
+
 - **Non-Transferable Tokens**: The contract overrides the ERC721 transfer functions to ensure that tokens cannot be transferred.
 - **Credential Verification**: The `verifyCredential` function allows anyone to verify a student's credential.
 - **Credential Revocation**: The `revokeCredential` function allows the contract owner to revoke a credential.
@@ -174,9 +179,9 @@ Would you like any further clarification or additional functionality?
 
 Stream Response Time: 97089.97802734375 ms
 {
-    "prompt_tokens": 20301,
-    "completion_tokens": 1867,
-    "total_tokens": 22168,
-    "prompt_cache_hit_tokens": 1024,
-    "prompt_cache_miss_tokens": 19277
+"prompt_tokens": 20301,
+"completion_tokens": 1867,
+"total_tokens": 22168,
+"prompt_cache_hit_tokens": 1024,
+"prompt_cache_miss_tokens": 19277
 }

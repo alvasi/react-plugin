@@ -78,7 +78,7 @@ Please note that this is a simplified example and might need to be adapted to fi
 
 **user**: I want a contract to issue soulbound tokens as course micro-credentials once students achieve a specific pass mark. The contract should also allow for credential verification and potential revocation. However, these tokens should be non-transferable.
 
-**assistant**: I'm sorry for the confusion, but the Soulbound tokens can't be implemented in this context because they are non-transferable by nature. When you mint a Soulbound token, it's already bound to the Ethereum address that owns it, making it non-transferable. 
+**assistant**: I'm sorry for the confusion, but the Soulbound tokens can't be implemented in this context because they are non-transferable by nature. When you mint a Soulbound token, it's already bound to the Ethereum address that owns it, making it non-transferable.
 
 However, you can still implement the logic for issue credential, verification, and revocation, and use an ERC721 token contract for Soulbound tokens. Here's a simplified example:
 
@@ -121,7 +121,7 @@ contract CourseCredential is ERC721 {
 }
 ```
 
-In this contract, when a student passes a course and gets the credential, the `issueCredential` function mints a new token to the student. The token IDs are sequential, starting from 1 and incrementing for each new token. The `revokeCredential` function is used to remove the credential from the student's possession, but it does not destroy the token. 
+In this contract, when a student passes a course and gets the credential, the `issueCredential` function mints a new token to the student. The token IDs are sequential, starting from 1 and incrementing for each new token. The `revokeCredential` function is used to remove the credential from the student's possession, but it does not destroy the token.
 
 Please note that this is a simplified example and might need to be adapted to fit your specific use case. It's recommended to add more checks and balances to make sure it behaves as expected in a real-world scenario.
 
@@ -157,11 +157,11 @@ In this contract, the `_beforeTokenTransfer` function is overridden to revert th
 
 Please note that this is a simplified example and might need to be adapted to fit your specific use case. It's recommended to add more checks and balances to make sure it behaves as expected in a real-world scenario.
 
-**user**: I want a contract to issue non-transferable ERC721 tokens as course micro-credentials once students achieve a specific pass mark. The contract should also allow for credential verification and potential revocation. 
+**user**: I want a contract to issue non-transferable ERC721 tokens as course micro-credentials once students achieve a specific pass mark. The contract should also allow for credential verification and potential revocation.
 
 **assistant**: Sure, I can help you design a basic structure of such a contract in Solidity.
 
-Here is a simple contract that might serve as a starting point. This contract includes a `Course` struct to represent courses, and an `IssuedCredential` struct to represent issued credentials. The contract also includes functions to issue a credential  (`issueCredential`), verify a credential (`verifyCredential`), and revoke a credential (`revokeCredential`).
+Here is a simple contract that might serve as a starting point. This contract includes a `Course` struct to represent courses, and an `IssuedCredential` struct to represent issued credentials. The contract also includes functions to issue a credential (`issueCredential`), verify a credential (`verifyCredential`), and revoke a credential (`revokeCredential`).
 
 ```solidity
 pragma solidity ^0.8.0;
@@ -203,7 +203,7 @@ Also, note that this contract doesn't actually issue or manage tokens. If you wa
 
 This code is just a starting point. It's recommended to add more checks and balances to make sure it behaves as expected in a real-world scenario.
 
-**user**: ParserError: Expected '=>' but got 'ILLEGAL'   --> contracts/remix_5.sol:14:21:    | 14 |     mapping(address → Course) public courses;
+**user**: ParserError: Expected '=>' but got 'ILLEGAL' --> contracts/remix_5.sol:14:21: | 14 | mapping(address → Course) public courses;
 
 **assistant**: I apologize for the confusion. The arrow operator (`→`) should be replaced with the map key-value assignment operator (`=>`) in your contract. Here is the corrected code:
 

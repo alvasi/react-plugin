@@ -10,16 +10,6 @@ In the project directory, you can run:
 
 To download all the dependencies from package.json file needed for the project.
 
-### `npm start`
-
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
-
-<!-- This is the url you enter when you want to connect this local plugin on Remix. -->
-
-The page will reload if you make edits.\
-You will also see any lint errors in the console.
-
 ### `npm test`
 
 Launches the test runner and runs the tests in /src/App.test.tsx file.\
@@ -42,7 +32,7 @@ Uses Prettier code formatter to ensure that files adhere to a single standard.
 
 1. Click the plugin manager icon on the sidebar of Remix.
 2. Click Connect to a Local Plugin.
-3. Run either `npm start` or `npm run build` in the terminal of project directory.
+3. Run `npm run build` in the terminal of project directory.
 4. Enter as shown below:
 
 ![localPlugin](/src/assets/connection.png 'Connecting a local plugin on Remix')

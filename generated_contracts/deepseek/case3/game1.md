@@ -493,3 +493,93 @@ contract TournamentRewards is ERC1155, Ownable, VRFConsumerBase {
 - **Error Handling**: Adding more robust error handling and validation for input data could prevent invalid operations.
 
 Would you like to add any specific features or functionalities to the contract, such as timestamping or more detailed error handling?
+
+## Final contract
+
+```solidity
+// SPDX-License-Identifier: MIT
+pragma solidity ^0.8.0;
+
+import "@openzeppelin/contracts/token/ERC1155/ERC1155.sol";
+import "@openzeppelin/contracts/access/Ownable.sol";
+import "@chainlink/contracts/src/v0.8/VRFConsumerBase.sol";
+
+contract TournamentRewards is ERC1155, Ownable, VRFConsumerBase {
+    uint256 public constant GOLD = 0;
+    uint256 public constant MYSTERY_BOX = 1;
+    uint256 public constant UNIQUE_CHARACTER_SKIN = 2;
+    uint256 public constant EVENT_EXCLUSIVE_RING = 3;
+    uint256 public constant CRYSTALS = 4;
+
+    bytes32 internal keyHash;
+    uint256 internal fee;
+    uint256 public randomResult;
+    bool public ringDistributed = false;
+
+    constructor(address _vrfCoordinator, address _linkToken, bytes32 _keyHash, uint256 _fee)
+        ERC1155("https://game.example/{id}.json")
+        VRFConsumerBase(_vrfCoordinator, _linkToken)
+        Ownable(msg.sender)
+    {
+        keyHash = _keyHash;
+        fee = _fee;
+
+        // Mint initial supply for rewards
+        _mint(address(this), GOLD, 100000, ""); // 100,000 gold
+        _mint(address(this), MYSTERY_BOX, 50, ""); // 50 mystery boxes
+        _mint(address(this), UNIQUE_CHARACTER_SKIN, 1, ""); // 1 unique character skin
+        _mint(address(this), EVENT_EXCLUSIVE_RING, 1, ""); // 1 event exclusive ring
+        _mint(address(this), CRYSTALS, 5000, ""); // 5000 crystals
+    }
+
+    function distributeRewards(address[] memory players, uint256[] memory rankings) public onlyOwner {
+        require(players.length == rankings.length, "Arrays length mismatch");
+
+        for (uint256 i = 0; i < players.length; i++) {
+            uint256 rank = rankings[i];
+            if (rank == 1) {
+                _safeTransferFrom(address(this), players[i], GOLD, 10000, "");
+                _safeTransferFrom(address(this), players[i], MYSTERY_BOX, 5, "");
+                _safeTransferFrom(address(this), players[i], UNIQUE_CHARACTER_SKIN, 1, "");
+            } else if (rank >= 2 && rank <= 5) {
+                _safeTransferFrom(address(this), players[i], GOLD, 5000, "");
+                _safeTransferFrom(address(this), players[i], MYSTERY_BOX, 3, "");
+            } else if (rank >= 6 && rank <= 10) {
+                _safeTransferFrom(address(this), players[i], GOLD, 2500, "");
+                _safeTransferFrom(address(this), players[i], MYSTERY_BOX, 1, "");
+            } else {
+                _safeTransferFrom(address(this), players[i], GOLD, 100, "");
+            }
+        }
+
+        // Request a random number from Chainlink VRF
+        requestRandomness(keyHash, fee);
+    }
+
+    function fulfillRandomness(bytes32 requestId, uint256 randomness) internal override {
+        randomResult = randomness;
+
+        // Distribute the event exclusive ring to one of the mystery boxes
+        if (!ringDistributed) {
+            uint256 ringIndex = randomness % 50;
+            _safeTransferFrom(address(this), address(this), MYSTERY_BOX, 1, "");
+            _safeTransferFrom(address(this), address(this), EVENT_EXCLUSIVE_RING, 1, "");
+            ringDistributed = true;
+
+            // Distribute crystals to the remaining mystery boxes
+            for (uint256 i = 0; i < 50; i++) {
+                if (i != ringIndex) {
+                    uint256 crystalsAmount = (randomness % 91) + 10; // 10 to 100 crystals
+                    _safeTransferFrom(address(this), address(this), MYSTERY_BOX, 1, "");
+                    _safeTransferFrom(address(this), address(this), CRYSTALS, crystalsAmount, "");
+                }
+                randomness = uint256(keccak256(abi.encodePacked(randomness)));
+            }
+        }
+    }
+
+    function withdrawTokens(uint256 id, uint256 amount, address to) public onlyOwner {
+        _safeTransferFrom(address(this), to, id, amount, "");
+    }
+}
+```

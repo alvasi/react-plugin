@@ -412,4 +412,5 @@ uint256 qualityCheckPercentage; // percentage of material that passed quality ch
     function getTransactions() public view returns (Transaction[] memory) {
         return transactions;
     }
+
 }

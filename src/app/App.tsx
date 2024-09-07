@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { RemixClient } from './deepseek-client';
 import ReactMarkdown from 'react-markdown';
 import { Prism as SyntaxHighlighter } from 'react-syntax-highlighter';
@@ -19,13 +19,39 @@ export const App = () => {
   const [message, setMessage] = useState('');
   // State to store all conversations
   const [conversations, setConversations] = useState([]);
+  const [showPopup, setShowPopup] = useState(false);
+  const [agreedToTerms, setAgreedToTerms] = useState(false);
+
+  const handleAgreeChange = () => {
+    setAgreedToTerms(!agreedToTerms);
+  };
+
+  const handleClosePopup = () => {
+    if (agreedToTerms) {
+      setShowPopup(false);
+      localStorage.setItem('firstVisit', 'true');
+    } else {
+      alert('You must agree to the terms and conditions to use this plugin.');
+    }
+  };
 
   // Toggle the visibility of the tutorial section
-  const toggleTutorial = () => setShowTutorial(!showTutorial);
+  const toggleTutorial = () => {
+    if (showPopup) {
+      return;
+    } else {
+      setShowTutorial(!showTutorial);
+    }
+  };
 
   // Handle generating template based on user's input
   const handleGenerateTemplate = async () => {
     if (!message.trim()) return; // Prevent processing empty messages
+    if (!agreedToTerms) {
+      alert('You must agree to the terms and conditions to use this plugin.');
+      setShowPopup(true);
+      return;
+    }
 
     // Create a new conversation entry
     const newConversation = {
@@ -126,6 +152,119 @@ export const App = () => {
 
   return (
     <div className="container mt-3">
+      {showPopup && (
+        <div className="popup">
+          <h4>Terms and Conditions</h4>
+          <div className="terms-container">
+            <p>
+              Please read and agree to the terms and conditions below to use
+              this plugin:
+            </p>
+            <div className="terms-text">
+              <p>
+                The AI chat assistant is an external API service. This
+                third-party service may collect your text input. Please refrain
+                from including any sensitive data.
+              </p>
+              <p>
+                The DeepSeek API service automatically collects information from
+                you when you use the plugin, including internet or other network
+                activity information such as your IP address, unique device
+                identifiers, and cookies.{' '}
+              </p>
+              <p>
+                <strong>Log Data.</strong>Information that your browser or
+                device automatically sends when you use the plugin. Log data
+                includes your Internet Protocol address, browser type and
+                settings, the date and time of your request, and how you
+                interact with the external API.{' '}
+              </p>
+              <p>
+                <strong>Usage Information.</strong>Deepseek collects information
+                regarding your use of their services, such as the features you
+                use and the actions you take.
+              </p>
+              <p>
+                <strong>Device Information.</strong>Deepseek collect certain
+                information about the device you use to access their services,
+                such as your unique device identifiers (device ID), network type
+                and connections, mobile or device model, device manufacturer,
+                application version number, operating system, device resolution,
+                and system language and region.{' '}
+              </p>
+              <p>
+                <strong>Cookies.</strong>Deepseek and their service providers
+                and business partners may use cookies and other similar
+                technologies (e.g., web beacons, flash cookies, etc.)
+                (“Cookies”) to automatically collect information, measure and
+                analyse how their services are used. Cookies enable certain
+                features and functionality. Web beacons are very small images or
+                small pieces of data embedded in images, also known as “pixel
+                tags” or “clear GIFs,” that can recognise Cookies, the time and
+                date a page is viewed, a description of the page where the pixel
+                tag is placed, and similar information from your computer or
+                device.{' '}
+              </p>
+
+              <p>
+                Deepseek uses your information to promote the safety and
+                security of their, including by scanning, analysing, and
+                reviewing content, messages and associated metadata for
+                violations of our Terms of Service or other conditions and
+                policies.
+              </p>
+              <p>
+                They also use it to operate, provide, develop, and improve their
+                services, including for the following purposes.{' '}
+              </p>
+
+              <p>
+                Provide you with user support, notify you about changes to the
+                services and communicate with you;
+              </p>
+              <p>Detect abuse, fraud and illegal activity on the services;</p>
+              <p>
+                Promote the safety and security of the services; Enforce their
+                Terms, Guidelines, and other policies that apply to you and to
+                protect the safety and well-being of our community;
+              </p>
+              <p>
+                Carry out data analysis, research and investigations, and test
+                the services to ensure its stability and security;
+              </p>
+              <p>
+                Comply with any applicable laws, regulations, codes of practice,
+                guidelines, or rules, or to assist in law enforcement and
+                investigations conducted by any governmental and/or regulatory
+                authority;
+              </p>
+              <p>Understand how you use the services;</p>
+              <p>Administer the services, including troubleshooting;</p>
+              <p>
+                Promote the service or third party services through marketing
+                communications, contests, or promotions;
+              </p>
+              <p>
+                For any other purposes for which you have provided the
+                information, with your consent or at your direction.
+              </p>
+            </div>
+          </div>
+          <div className="terms-agreement">
+            <label>
+              <input
+                type="checkbox"
+                checked={agreedToTerms}
+                onChange={handleAgreeChange}
+              />
+              I agree to the terms and conditions.
+            </label>
+          </div>
+          <button onClick={handleClosePopup} disabled={!agreedToTerms}>
+            Agree and Continue
+          </button>
+        </div>
+      )}
       <div className="tutorial">
         <button
           className="btn btn-secondary tutorial-btn"
@@ -149,9 +288,23 @@ export const App = () => {
             <strong>How to word prompts:</strong>
           </p>
           <ul>
-            <li>Be clear and concise.</li>
-            <li>Specify the context if necessary.</li>
-            <li>Use simple language.</li>
+            <li>
+              Specify the context and include important details such as
+              standards and protocols you want the generated contract to
+              implement.
+            </li>
+            <li>
+              Add error message and remediation suggestions provided by compiler
+              and code analysers (Remix, Solhint, SolidityScan)
+            </li>
+            <li>
+              Split a complex task into a set of smaller, more manageable
+              instructions
+            </li>
+            <li>
+              Explicitly point out any missed implementation from previous
+              prompts.
+            </li>
           </ul>
           <p>
             For more detailed examples, refer to{' '}

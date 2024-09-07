@@ -60,3 +60,36 @@
   width: 100%;
   height: auto;
 }
+
+.popup {
+  position: fixed;
+  top: 20%;
+  left: 50%;
+  transform: translate(-50%, -20%);
+  padding: 20px;
+  z-index: 1000;
+  width: 80%;
+  border: 1px solid #ccc;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+}
+
+.terms-container {
+  max-height: 200px;
+  overflow-y: scroll;
+  border: 1px solid #ccc;
+  padding: 10px;
+  margin-bottom: 10px;
+}
+
+.terms-text {
+  font-size: 0.8rem;
+}
+
+.terms-agreement {
+  margin-top: 10px;
+}
+
+button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}

@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { RemixClient } from './deepseek-client';
 import ReactMarkdown from 'react-markdown';
 import { Prism as SyntaxHighlighter } from 'react-syntax-highlighter';
@@ -19,7 +19,9 @@ export const App = () => {
   const [message, setMessage] = useState('');
   // State to store all conversations
   const [conversations, setConversations] = useState([]);
+  // State to show user consent form for terms and conditions
   const [showPopup, setShowPopup] = useState(false);
+  // State to store user agreement to terms and conditions
   const [agreedToTerms, setAgreedToTerms] = useState(false);
 
   const handleAgreeChange = () => {

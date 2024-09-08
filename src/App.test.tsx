@@ -24,11 +24,18 @@ vi.mock('./app/deepseek-client', () => {
             onStreamUpdate(mockResponse);
           }
         },
-        // Add other methods if needed
       };
     }),
   };
 });
+
+// Utility function to give user consent
+const giveUserConsent = async () => {
+  const agreeCheckbox = screen.getByRole('checkbox', { name: /I agree to the terms and conditions./i });
+  const agreeButton = screen.getByRole('button', { name: /Agree and Continue/i });
+  await userEvent.click(agreeCheckbox);
+  await userEvent.click(agreeButton);
+};
 
 describe('App Component', () => {
   beforeEach(() => {
@@ -65,16 +72,40 @@ describe('App Component', () => {
     const textareaElement = screen.getByPlaceholderText(
       /Describe desired smart contract/i,
     );
-
-    // Focus the textarea before typing
-    textareaElement.focus();
-    // Verify that the textarea value does not contain a newline
-    expect(textareaElement.value).not.toMatch(/\n/);
-    // Simulate typing Shift+Enter in the textarea
-    await userEvent.keyboard('{Shift>}{Enter}{/Shift}');
-
-    // Use a more flexible assertion to check if the value ends with a newline
+    textareaElement.focus(); // Focus the textarea before typing
+    expect(textareaElement.value).not.toMatch(/\n/); // Verify that the textarea value does not contain a newline
+    await userEvent.keyboard('{Shift>}{Enter}{/Shift}'); // Simulate typing Shift+Enter in the textarea
     expect(textareaElement.value).toMatch(/\n$/);
+  });
+
+  it('requires user consent before receiving a response for the first time', async () => {
+    const input = screen.getByPlaceholderText(/Describe desired smart contract/i);
+    const generateButton = screen.getByRole('button', { name: /enter/i });
+    await userEvent.type(input, 'Test Message');
+    await userEvent.click(generateButton);
+
+    // Check if the consent popup is shown
+    const termsHeading = screen.getByRole('heading', { name: /Terms and Conditions/i });
+    expect(termsHeading).toBeInTheDocument();
+  });
+
+  it('generates a bot response on enter button click', async () => {
+    const input = screen.getByPlaceholderText(
+      /Describe desired smart contract/i,
+    );
+    const generateButton = screen.getByRole('button', { name: /enter/i });
+
+    // Simulate user typing and submitting
+    await userEvent.type(input, 'Test Message');
+    await userEvent.click(generateButton);
+    giveUserConsent();
+    await userEvent.click(generateButton);
+
+    // Verify conversation added
+    expect(screen.getByText('Assistant Bot')).toBeInTheDocument();
+    expect(
+      screen.getByText(/Mock response for Test Message/i),
+    ).toBeInTheDocument();
   });
 
   it('clears the input and conversations on clear button click', async () => {
@@ -87,6 +118,8 @@ describe('App Component', () => {
     // Simulate user typing and submitting
     await userEvent.type(input, 'Test Message');
     await userEvent.click(generateButton);
+    giveUserConsent();
+    await userEvent.click(generateButton);
 
     // Verify conversation added
     expect(screen.getByText('You')).toBeInTheDocument();
@@ -97,23 +130,6 @@ describe('App Component', () => {
     expect(input).toHaveValue('');
     expect(screen.queryByText('You')).not.toBeInTheDocument();
     expect(screen.queryByText('Test Message')).not.toBeInTheDocument();
-  });
-
-  it('generates a bot response on enter button click', async () => {
-    const input = screen.getByPlaceholderText(
-      /Describe desired smart contract/i,
-    );
-    const generateButton = screen.getByRole('button', { name: /enter/i });
-
-    // Simulate user typing and submitting
-    await userEvent.type(input, 'Test Message');
-    await userEvent.click(generateButton);
-
-    // Verify conversation added
-    expect(screen.getByText('Assistant Bot')).toBeInTheDocument();
-    expect(
-      screen.getByText(/Mock response for Test Message/i),
-    ).toBeInTheDocument();
   });
 
   it('shows copy button when code chunk is present', async () => {
@@ -130,6 +146,8 @@ describe('App Component', () => {
 
     // Simulate user typing markdown with a code block and submitting
     await userEvent.type(input, fetchContractCode);
+    await userEvent.click(generateButton);
+    giveUserConsent();
     await userEvent.click(generateButton);
 
     // Check if the copy button is present in the document after clicking the generate button

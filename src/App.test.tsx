@@ -31,8 +31,12 @@ vi.mock('./app/deepseek-client', () => {
 
 // Utility function to give user consent
 const giveUserConsent = async () => {
-  const agreeCheckbox = screen.getByRole('checkbox', { name: /I agree to the terms and conditions./i });
-  const agreeButton = screen.getByRole('button', { name: /Agree and Continue/i });
+  const agreeCheckbox = screen.getByRole('checkbox', {
+    name: /I agree to the terms and conditions./i,
+  });
+  const agreeButton = screen.getByRole('button', {
+    name: /Agree and Continue/i,
+  });
   await userEvent.click(agreeCheckbox);
   await userEvent.click(agreeButton);
 };
@@ -79,13 +83,17 @@ describe('App Component', () => {
   });
 
   it('requires user consent before receiving a response for the first time', async () => {
-    const input = screen.getByPlaceholderText(/Describe desired smart contract/i);
+    const input = screen.getByPlaceholderText(
+      /Describe desired smart contract/i,
+    );
     const generateButton = screen.getByRole('button', { name: /enter/i });
     await userEvent.type(input, 'Test Message');
     await userEvent.click(generateButton);
 
     // Check if the consent popup is shown
-    const termsHeading = screen.getByRole('heading', { name: /Terms and Conditions/i });
+    const termsHeading = screen.getByRole('heading', {
+      name: /Terms and Conditions/i,
+    });
     expect(termsHeading).toBeInTheDocument();
   });
 

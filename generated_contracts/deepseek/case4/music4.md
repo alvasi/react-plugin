@@ -107,7 +107,7 @@ Stream Response Time: 64577.681884765625 ms
 "prompt_cache_miss_tokens": 84
 }
 
-**user**: To incorporate the distribution of royalties as specified (60% to the artist, 30% to the recording label, and 10% as a platform fee) and use the ERC2981 standard for NFT royalties, we can extend the previous contract.
+**user**: It should distribute 60% of the collected royalties to the artist, 30% to the recording label, and retain 10% as a platform fee. Use the ERC2981 standard for NFT royalties.
 
 **assistant**: To incorporate the distribution of royalties as specified (60% to the artist, 30% to the recording label, and 10% as a platform fee) and use the ERC2981 standard for NFT royalties, we can extend the previous contract.
 

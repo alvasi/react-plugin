@@ -8,7 +8,7 @@ export class RemixClient extends PluginClient {
 
   constructor() {
     super();
-    this.methods = ['init', 'message'];
+    this.methods = ['init', 'message']; // Methods that have to be exposed to Remix plugin manager
     createClient(this);
   }
 
@@ -37,10 +37,10 @@ export class RemixClient extends PluginClient {
   // streaming response, user sees content as it is being generated
   async message(
     message = 'I want a smart contract for purchasing NFTs',
-    onStreamUpdate,
+    onStreamUpdate, // callback function to update UI with stream content
   ) {
     try {
-      this.messages.push({ content: message, role: 'user' });
+      this.messages.push({ content: message, role: 'user' }); //append user message to history
       if (!this.deepseekClient || !this.deepseekClient.beta) {
         console.error(
           'DeepseekClient or deepseekClient.beta is not initialised',
@@ -71,6 +71,7 @@ export class RemixClient extends PluginClient {
         await stream.finalChatCompletion();
       console.log(chatCompletion.choices[0].message.content);
       console.timeEnd('Stream Response Time'); // end timer
+
       this.messages.push({
         content: chatCompletion.choices[0].message.content,
         role: 'assistant',

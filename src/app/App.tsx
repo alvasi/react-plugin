@@ -262,7 +262,7 @@ export const App = () => {
               I agree to the terms and conditions.
             </label>
           </div>
-          <button onClick={handleClosePopup} disabled={!agreedToTerms}>
+          <button className= "btn btn-secondary" onClick={handleClosePopup} disabled={!agreedToTerms}>
             Agree and Continue
           </button>
         </div>

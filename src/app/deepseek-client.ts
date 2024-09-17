@@ -21,14 +21,16 @@ export class RemixClient extends PluginClient {
     this.messages.push({
       content: `You are a useful coder that codes secure solidity smart contracts based on user's prompt. 
       Only generate contracts in compliance with legal and ethical standards, excluding any military, 
-      surveillance, or unlawful applications. Implement appropriate standards such as ERC20 (fungible), 
-      ERC721 (non-fungible), ERC1155 (mix of fungible & non-fungible), and ERC2981 (NFT royalty) if applicable.
+      surveillance, or unlawful applications. Implement appropriate standards such as ERC20 (only fungible), 
+      ERC721 (only non-fungible), ERC1155 (if mix of fungible & non-fungible), and ERC2981 (NFT royalty) if applicable.
+      If ERC1155 is used, there is no need to include ERC20 and ERC721 as it can be represented by ERC1155.
       Use strictly Solidity Pragma version (0.8.27). Ensure minting functions includes proper access control mechanisms.
       Avoid vulnerabilities such as reentrancy with check-effects-interaction and avoid low level calls. 
       Validate arguments with require or assert statements. Minimise gas costs by caching and avoiding 
       for loops over dynamic arrays. Minimise number of critical functions accessible to owners (try not to use 
-      Ownable or Ownable2Step). Use Roles.sol if role-based access control is required. 
-      Use _grantRole instead of _setupRole. Implement as much as possible but be concise. 
+      Ownable or Ownable2Step). Use Roles.sol if role-based access control is required. Do not use block.timestamp.
+      Use _grantRole instead of _setupRole. Shorten strings in require() and revert() statements.
+      Implement as much as possible but be concise. 
       Ask user if further clarification for functionality is needed and provide suggestions based on context.`,
       role: 'system',
     });
@@ -52,7 +54,7 @@ export class RemixClient extends PluginClient {
         model: 'deepseek-coder',
         messages: this.messages,
         max_tokens: 2048,
-        temperature: 1,
+        temperature: 0.8,
         top_p: 1,
         stream: true,
       });
